@@ -37,3 +37,166 @@
     transform: translateY(0px);
   }
 }
+
+.container {
+  background: black;
+}
+
+.white-text {
+  fill: white;
+  stroke: white;
+}
+.black-text {
+  fill: black;
+  stroke: black;
+}
+
+.purple-circle {
+  fill: #5d3a8a;
+  stroke: #5d3a8a;
+}
+
+.black-circle {
+  fill: black;
+  stroke: #eadeb6;
+}
+.white-circle {
+  fill: white;
+  stroke: white;
+}
+
+.burgundy-circle {
+  fill: #6a3432;
+  stroke: #6a3432;
+}
+
+.blue-circle {
+  fill: #343e6f;
+  stroke: #343e6f;
+}
+
+.orange-circle {
+  fill: #a34924;
+  stroke: #a34924;
+}
+
+.lightblue-circle {
+  fill: #74a3ab;
+  stroke: #74a3ab;
+}
+.green-circle {
+  fill: #4c8656;
+  stroke: #4c8656;
+}
+.sandy-circle {
+  fill: #e2bc76;
+  stroke: #e2bc76;
+}
+
+.large-circle {
+  --radius: 9;
+  stroke-width: 0.6px;
+}
+
+.large-text {
+  fill: white;
+  stroke: white;
+  font-size: 12px;
+  stroke-width: 0.8px;
+  letter-spacing: 0.8px;
+}
+
+.medium-circle {
+  --radius: 5.5;
+  stroke-width: 0.6px;
+}
+
+.medium-text {
+  fill: white;
+  stroke: white;
+  font-size: 8px;
+  stroke-width: 0.6px;
+}
+
+.small-circle {
+  --radius: 4.5;
+  stroke-width: 0.5px;
+}
+
+.small-text {
+  fill: white;
+  stroke: white;
+  font-size: 6px;
+  stroke-width: 0.3px;
+}
+
+.mini-circle {
+  --radius: 2.5;
+  stroke-width: 0.5px;
+}
+
+.mini-text {
+  font-size: 4px;
+  stroke-width: 0.3px;
+}
+
+.matrix-line {
+  fill: transparent;
+  stroke: #eadeb6;
+}
+
+.line {
+  stroke-width: 0.3px;
+}
+
+.bold-line {
+  stroke-width: 0.7px;
+}
+
+.matrix-value-point {
+  text-anchor: middle;
+  alignment-baseline: middle;
+}
+
+.matrix-label {
+  font-family: Arial-ItalicMT, Arial;
+  font-style: italic;
+  font-size: 2px;
+  fill: white;
+}
+
+.matrix-label-bold {
+  font-family: Arial-ItalicMT, Arial;
+  font-weight: bold;
+  font-size: 3.5px;
+  fill: white;
+}
+
+.matrix-label-circle {
+  fill: #eadeb6;
+  stroke: #eadeb6;
+  --radius: 0.15;
+}
+
+.matrix-label-circle-medium {
+  fill: #eadeb6;
+  stroke: #eadeb6;
+  --radius: 0.3;
+}
+.matrix-label-circle-large {
+  stroke: #eadeb6;
+  fill: transparent;
+  stroke-width: 0.3;
+  --radius: 1.5;
+}
+
+.matrix-label-info {
+  font-family: Arial-ItalicMT, Arial;
+  font-weight: bold;
+  font-size: 3.5px;
+  fill: white;
+}
+
+.small-arrow {
+  stroke-width: 0.4px;
+}
