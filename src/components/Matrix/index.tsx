@@ -1,5 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./styles.module.scss";
+import { useAppDispath } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { matrixSelector } from "../../redux/matrix/selectors";
+import DatePicker from "../DatePicker";
 
 class Point {
   x: number;
@@ -46,6 +50,8 @@ interface TextProps {
 }
 
 const Matrix: React.FC = () => {
+  const dispatch = useAppDispath();
+  const { largeCircles } = useSelector(matrixSelector);
   const marginX = 60;
   const marginY = 95;
 
@@ -322,266 +328,268 @@ const Matrix: React.FC = () => {
     circle.setAttribute("class", "matrix-line line");
 
     $svgRef.append(circle);
-    //Центер
-    drawCircle({
-      point: Center,
-      value: "9",
-      color: "sandy",
-      dx: 0,
-      dy: 0,
-    });
-    //Внешний радиус
-    drawCircle({
-      point: A,
-      color: "purple",
-      value: "13",
-      dx: 9,
-      dy: 0,
-    });
-    drawCircle({
-      point: A,
-      value: "8",
-      color: "blue",
-      size: "medium",
-      dx: indentCircleXS,
-      dy: 0,
-    });
-    drawCircle({
-      point: A,
-      value: "22",
-      color: "lightblue",
-      size: "small",
-      dx: indentCircleS,
-      dy: 0,
-    });
 
-    drawCircle({
-      point: A,
-      value: "4",
-      color: "green",
-      size: "small",
-      dx: indentCircleM,
-      dy: 0,
-    });
-    //--------------------------------------//
+    largeCircles.forEach((circle: any) => drawCircle(circle));
+    // //Центер
+    // drawCircle({
+    //   point: Center,
+    //   value: "9",
+    //   color: "sandy",
+    //   dx: 0,
+    //   dy: 0,
+    // });
+    // //Внешний радиус
+    // drawCircle({
+    //   point: A,
+    //   color: "purple",
+    //   value: "13",
+    //   dx: 9,
+    //   dy: 0,
+    // });
+    // drawCircle({
+    //   point: A,
+    //   value: "8",
+    //   color: "blue",
+    //   size: "medium",
+    //   dx: indentCircleXS,
+    //   dy: 0,
+    // });
+    // drawCircle({
+    //   point: A,
+    //   value: "22",
+    //   color: "lightblue",
+    //   size: "small",
+    //   dx: indentCircleS,
+    //   dy: 0,
+    // });
 
-    drawCircle({
-      point: B,
-      value: "16",
-      dx: 6,
-      dy: 7,
-    });
-    //--------------------------------------//
-    drawCircle({
-      point: C,
-      value: "3",
-      color: "purple",
-      size: "large",
-      dx: 0,
-      dy: 9,
-    });
-    drawCircle({
-      point: C,
-      value: "15",
-      color: "blue",
-      size: "medium",
-      dx: 0,
-      dy: indentCircleXS,
-    });
-    drawCircle({
-      point: C,
-      value: "12",
-      color: "lightblue",
-      size: "small",
-      dx: 0,
-      dy: indentCircleS,
-    });
-    drawCircle({
-      point: C,
-      value: "21",
-      color: "green",
-      size: "small",
-      dx: 0,
-      dy: indentCircleM,
-    });
+    // drawCircle({
+    //   point: A,
+    //   value: "4",
+    //   color: "green",
+    //   size: "small",
+    //   dx: indentCircleM,
+    //   dy: 0,
+    // });
+    // //--------------------------------------//
 
-    //--------------------------------------//
-    drawCircle({
-      point: D,
-      value: "5",
-      dx: -6,
-      dy: 7,
-    });
+    // drawCircle({
+    //   point: B,
+    //   value: "16",
+    //   dx: 6,
+    //   dy: 7,
+    // });
+    // //--------------------------------------//
+    // drawCircle({
+    //   point: C,
+    //   value: "3",
+    //   color: "purple",
+    //   size: "large",
+    //   dx: 0,
+    //   dy: 9,
+    // });
+    // drawCircle({
+    //   point: C,
+    //   value: "15",
+    //   color: "blue",
+    //   size: "medium",
+    //   dx: 0,
+    //   dy: indentCircleXS,
+    // });
+    // drawCircle({
+    //   point: C,
+    //   value: "12",
+    //   color: "lightblue",
+    //   size: "small",
+    //   dx: 0,
+    //   dy: indentCircleS,
+    // });
+    // drawCircle({
+    //   point: C,
+    //   value: "21",
+    //   color: "green",
+    //   size: "small",
+    //   dx: 0,
+    //   dy: indentCircleM,
+    // });
 
-    //--------------------------------------//
-    drawCircle({
-      point: E,
-      value: "2",
-      color: "burgundy",
-      dx: -9,
-      dy: 0,
-    });
-    drawCircle({
-      point: E,
-      value: "13",
-      color: "black",
-      size: "medium",
-      dx: -indentCircleXS,
-      dy: 0,
-    });
-    drawCircle({
-      point: E,
-      value: "11",
-      color: "orange",
-      size: "small",
-      dx: -indentCircleS,
-      dy: 0,
-    });
+    // //--------------------------------------//
+    // drawCircle({
+    //   point: D,
+    //   value: "5",
+    //   dx: -6,
+    //   dy: 7,
+    // });
 
-    //--------------------------------------//
+    // //--------------------------------------//
+    // drawCircle({
+    //   point: E,
+    //   value: "2",
+    //   color: "burgundy",
+    //   dx: -9,
+    //   dy: 0,
+    // });
+    // drawCircle({
+    //   point: E,
+    //   value: "13",
+    //   color: "black",
+    //   size: "medium",
+    //   dx: -indentCircleXS,
+    //   dy: 0,
+    // });
+    // drawCircle({
+    //   point: E,
+    //   value: "11",
+    //   color: "orange",
+    //   size: "small",
+    //   dx: -indentCircleS,
+    //   dy: 0,
+    // });
 
-    drawCircle({
-      point: F,
-      value: "20",
-      dx: -6,
-      dy: -7,
-    });
+    // //--------------------------------------//
 
-    //--------------------------------------//
-    drawCircle({
-      point: G,
-      value: "18",
-      color: "burgundy",
-      dx: 0,
-      dy: -9,
-    });
-    drawCircle({
-      point: G,
-      value: "9",
-      color: "black",
-      size: "medium",
-      dx: 0,
-      dy: -indentCircleXS,
-    });
-    drawCircle({
-      point: G,
-      value: "9",
-      color: "orange",
-      size: "small",
-      dx: 0,
-      dy: -indentCircleS,
-    });
-    //--------------------------------------//
+    // drawCircle({
+    //   point: F,
+    //   value: "20",
+    //   dx: -6,
+    //   dy: -7,
+    // });
 
-    drawCircle({
-      point: H,
-      value: "4",
-      dx: 6,
-      dy: -7,
-    });
+    // //--------------------------------------//
+    // drawCircle({
+    //   point: G,
+    //   value: "18",
+    //   color: "burgundy",
+    //   dx: 0,
+    //   dy: -9,
+    // });
+    // drawCircle({
+    //   point: G,
+    //   value: "9",
+    //   color: "black",
+    //   size: "medium",
+    //   dx: 0,
+    //   dy: -indentCircleXS,
+    // });
+    // drawCircle({
+    //   point: G,
+    //   value: "9",
+    //   color: "orange",
+    //   size: "small",
+    //   dx: 0,
+    //   dy: -indentCircleS,
+    // });
+    // //--------------------------------------//
 
-    //Внутренний радиус квадрата
-    const rectA = new Point(marginX, marginY);
-    const rectB = new Point(marginX + side, marginY);
-    const rectC = new Point(marginX, marginY + side);
-    const rectD = new Point(marginX + side, marginY + side);
-    //--------------------------------------//
-    drawCircle({
-      point: rectA,
-      value: "5",
-      color: "black",
-      size: "medium",
-      dx: 8,
-      dy: 8,
-    });
-    drawCircle({
-      point: rectA,
-      value: "7",
-      color: "black",
-      size: "small",
-      dx: 15.5,
-      dy: 15.5,
-    });
+    // drawCircle({
+    //   point: H,
+    //   value: "4",
+    //   dx: 6,
+    //   dy: -7,
+    // });
 
-    //--------------------------------------//
+    // //Внутренний радиус квадрата
+    // const rectA = new Point(marginX, marginY);
+    // const rectB = new Point(marginX + side, marginY);
+    // const rectC = new Point(marginX, marginY + side);
+    // const rectD = new Point(marginX + side, marginY + side);
+    // //--------------------------------------//
+    // drawCircle({
+    //   point: rectA,
+    //   value: "5",
+    //   color: "black",
+    //   size: "medium",
+    //   dx: 8,
+    //   dy: 8,
+    // });
+    // drawCircle({
+    //   point: rectA,
+    //   value: "7",
+    //   color: "black",
+    //   size: "small",
+    //   dx: 15.5,
+    //   dy: 15.5,
+    // });
 
-    drawCircle({
-      point: rectB,
-      value: "19",
-      color: "black",
-      size: "medium",
-      dx: -8,
-      dy: 8,
-    });
-    drawCircle({
-      point: rectB,
-      value: "14",
-      color: "black",
-      size: "small",
-      dx: -15.5,
-      dy: 15.5,
-    });
+    // //--------------------------------------//
 
-    //--------------------------------------//
-    drawCircle({
-      point: rectC,
-      value: "17",
-      color: "black",
-      size: "medium",
-      dx: 8,
-      dy: -8,
-    });
+    // drawCircle({
+    //   point: rectB,
+    //   value: "19",
+    //   color: "black",
+    //   size: "medium",
+    //   dx: -8,
+    //   dy: 8,
+    // });
+    // drawCircle({
+    //   point: rectB,
+    //   value: "14",
+    //   color: "black",
+    //   size: "small",
+    //   dx: -15.5,
+    //   dy: 15.5,
+    // });
 
-    drawCircle({
-      point: rectC,
-      value: "13",
-      color: "black",
-      size: "small",
-      dx: 15.5,
-      dy: -15.5,
-    });
+    // //--------------------------------------//
+    // drawCircle({
+    //   point: rectC,
+    //   value: "17",
+    //   color: "black",
+    //   size: "medium",
+    //   dx: 8,
+    //   dy: -8,
+    // });
 
-    //--------------------------------------//
-    drawCircle({
-      point: rectD,
-      value: "4",
-      color: "black",
-      size: "medium",
-      dx: -8,
-      dy: -8,
-    });
-    drawCircle({
-      point: rectD,
-      value: "11",
-      color: "black",
-      size: "small",
-      dx: -15.5,
-      dy: -15.5,
-    });
-    drawCircle({
-      point: rectD,
-      value: "20",
-      color: "black",
-      size: "small",
-      dx: -30,
-      dy: -30,
-    });
-    drawCircle({
-      point: rectD,
-      value: "4",
-      color: "black",
-      size: "small",
-      dx: -18,
-      dy: -34,
-    });
-    drawCircle({
-      point: rectD,
-      value: "11",
-      color: "black",
-      size: "small",
-      dx: -34,
-      dy: -18,
-    });
+    // drawCircle({
+    //   point: rectC,
+    //   value: "13",
+    //   color: "black",
+    //   size: "small",
+    //   dx: 15.5,
+    //   dy: -15.5,
+    // });
+
+    // //--------------------------------------//
+    // drawCircle({
+    //   point: rectD,
+    //   value: "4",
+    //   color: "black",
+    //   size: "medium",
+    //   dx: -8,
+    //   dy: -8,
+    // });
+    // drawCircle({
+    //   point: rectD,
+    //   value: "11",
+    //   color: "black",
+    //   size: "small",
+    //   dx: -15.5,
+    //   dy: -15.5,
+    // });
+    // drawCircle({
+    //   point: rectD,
+    //   value: "20",
+    //   color: "black",
+    //   size: "small",
+    //   dx: -30,
+    //   dy: -30,
+    // });
+    // drawCircle({
+    //   point: rectD,
+    //   value: "4",
+    //   color: "black",
+    //   size: "small",
+    //   dx: -18,
+    //   dy: -34,
+    // });
+    // drawCircle({
+    //   point: rectD,
+    //   value: "11",
+    //   color: "black",
+    //   size: "small",
+    //   dx: -34,
+    //   dy: -18,
+    // });
 
     //--------------------------------------//
 
@@ -793,6 +801,7 @@ const Matrix: React.FC = () => {
   });
   return (
     <div className="container">
+      <DatePicker />
       <svg ref={svgRef} viewBox="0 0 450 450"></svg>
     </div>
   );
