@@ -1,9 +1,10 @@
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }
 
-interface PointProps {
+
+export interface PointProps {
   description?: string;
   point: Point;
   color?: string;
@@ -13,19 +14,15 @@ interface PointProps {
   dy: number;
 }
 
-export enum Status {
-  LOADING = "loading",
-  SUCCESS = "success",
-  ERROR = "error",
-}
 export enum Size {
   SMALL = "small",
   MEDIUM = "medium",
   LARGE = "large",
 }
 
-export interface MatrixGroups {
-  largeCircles: PointProps[];
+export interface MatrixInitialState {
+  points: Point[],
+  circles: PointProps[];
 }
 
 export type FetchmatrixArgs = {

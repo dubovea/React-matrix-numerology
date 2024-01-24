@@ -51,7 +51,7 @@ interface TextProps {
 
 const Matrix: React.FC = () => {
   const dispatch = useAppDispath();
-  const { largeCircles } = useSelector(matrixSelector);
+  const { circles } = useSelector(matrixSelector);
   const marginX = 60;
   const marginY = 95;
 
@@ -329,7 +329,7 @@ const Matrix: React.FC = () => {
 
     $svgRef.append(circle);
 
-    largeCircles.forEach((circle: any) => drawCircle(circle));
+    circles.forEach((circle: any) => drawCircle(circle));
     // //Центер
     // drawCircle({
     //   point: Center,
