@@ -308,7 +308,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка E2",
           point: rectA,
-          value: data.sum18,
+          value: data.sum19,
           color: "black",
           size: Size.MEDIUM,
           dx: 8,
@@ -317,7 +317,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка E1",
           point: rectA,
-          value: data.sum19,
+          value: data.sum18,
           color: "black",
           size: Size.SMALL,
           dx: 15.5,

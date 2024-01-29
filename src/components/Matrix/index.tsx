@@ -34,7 +34,6 @@ interface CircleProps {
   label: string;
   dx: number;
   dy: number;
-  degree?: number;
 }
 
 interface TextProps {
@@ -156,7 +155,7 @@ const Matrix: React.FC = () => {
       text2.textContent = props.label;
       text2.setAttribute("class", "matrix-label-bold");
       text2.setAttribute("dx", props.label.length > 5 ? "-18" : "-16");
-      text2.setAttribute("dy", "1");
+      text2.setAttribute("dy", "1.1");
 
       polygon.setAttribute("points", `-6 0 -4 1 -5 0 -4 -1 -6 0`);
 
@@ -170,9 +169,9 @@ const Matrix: React.FC = () => {
       group.append(group2);
       group.append(group3);
 
-      if (props.degree) {
-        group3.setAttribute("transform", `rotate(${props.degree})`);
-        text2.setAttribute("transform", `rotate(${props.degree})`);
+      if (!props.leftSide) {
+        group3.setAttribute("transform", `rotate(180)`);
+        text2.setAttribute("dx", "8");
       }
 
       group.setAttribute(
@@ -524,29 +523,65 @@ const Matrix: React.FC = () => {
       size: "mini",
       dx: -4,
       dy: 0,
-      degree: 45,
     });
     drawCircleWithArrow({
       point: C,
       value: "Б",
       label: "20 лет",
-      leftSide: false,
       color: "purple",
       size: "mini",
       dx: 0,
-      dy: -3.5,
-      degree: 90,
+      dy: -4,
     });
     drawCircleWithArrow({
       point: D,
-      value: "D",
+      value: "Ж",
       label: "30 лет",
-      leftSide: false,
-      color: "purple",
+      color: "white",
+      textColor: "black",
+      size: "mini",
+      dx: 4,
+      dy: 0,
+    });
+    drawCircleWithArrow({
+      point: E,
+      value: "В",
+      label: "40 лет",
+      color: "burgundy",
+      size: "mini",
+      dx: 4,
+      dy: 0,
+    });
+    drawCircleWithArrow({
+      point: F,
+      value: "И",
+      label: "50 лет",
+      color: "white",
+      textColor: "black",
+      size: "mini",
+      dx: 4,
+      dy: 0,
+    });
+    drawCircleWithArrow({
+      point: G,
+      value: "Г",
+      leftSide: true,
+      label: "60 лет",
+      color: "burgundy",
       size: "mini",
       dx: 0,
-      dy: -3.5,
-      degree: -180,
+      dy: 4,
+    });
+    drawCircleWithArrow({
+      point: H,
+      value: "З",
+      leftSide: true,
+      label: "70 лет",
+      color: "white",
+      textColor: "black",
+      size: "mini",
+      dx: -4,
+      dy: 0,
     });
   });
   return (
