@@ -21,6 +21,7 @@ interface PointProps {
   value: string;
   dx: number;
   dy: number;
+  description?: string;
 }
 
 interface CircleProps {
@@ -33,6 +34,7 @@ interface CircleProps {
   label: string;
   dx: number;
   dy: number;
+  degree?: number;
 }
 
 interface TextProps {
@@ -58,10 +60,6 @@ const Matrix: React.FC = () => {
   const indent = 10;
   const radius = 89;
   const side = 105;
-
-  const indentCircleXS = 25.5;
-  const indentCircleS = 36.5;
-  const indentCircleM = 60;
 
   const halfSide = side / 2;
   const centerX = marginX + halfSide;
@@ -106,6 +104,7 @@ const Matrix: React.FC = () => {
       text.setAttribute("dy", ".1em");
       text.setAttribute("x", (props.point.x + props.dx).toString());
       text.setAttribute("y", (props.point.y + props.dy).toString());
+      text.setAttribute("title", props.description || "");
 
       circle.setAttribute("cx", (props.point.x + props.dx).toString());
       circle.setAttribute("cy", (props.point.y + props.dy).toString());
@@ -122,6 +121,7 @@ const Matrix: React.FC = () => {
       const text = document.createElementNS(svgns, "text");
 
       const group2 = document.createElementNS(svgns, "g");
+      const group3 = document.createElementNS(svgns, "g");
       const text2 = document.createElementNS(svgns, "text");
       const line = document.createElementNS(svgns, "line");
       const polygon = document.createElementNS(svgns, "polygon");
@@ -136,52 +136,50 @@ const Matrix: React.FC = () => {
           : `${sSizeClassCircle} black-circle`,
         sClassLine = `${props.color}-circle small-arrow`;
 
-      const xCoordinate: number = props.point.x + props.dx,
-        yCoordinate: number = props.point.y + props.dy;
-
       text.textContent = props.value.toString();
       text.setAttribute(
         "class",
         `matrix-value-point ${sSizeClassText} ${sColorClassText}`
       );
       text.setAttribute("dy", ".1em");
-      text.setAttribute("x", xCoordinate.toString());
-      text.setAttribute("y", yCoordinate.toString());
 
-      circle.setAttribute("cx", xCoordinate.toString());
-      circle.setAttribute("cy", yCoordinate.toString());
       circle.setAttribute("style", "r: var(--radius);");
       circle.setAttribute("class", sClassCircle);
 
       polygon.setAttribute("class", sClassLine);
-      line.setAttribute("x1", (xCoordinate - 1).toString());
-      line.setAttribute("y1", yCoordinate.toString());
-      line.setAttribute("x2", (xCoordinate - 6).toString());
-      line.setAttribute("y2", yCoordinate.toString());
+      line.setAttribute("x1", "-6");
+      line.setAttribute("y1", "0");
+      line.setAttribute("x2", "-2");
+      line.setAttribute("y2", "0");
       line.setAttribute("class", sClassLine);
 
       text2.textContent = props.label;
       text2.setAttribute("class", "matrix-label-bold");
-      text2.setAttribute("dx", "-22");
-      text2.setAttribute("dy", (props.dy + 1).toString());
-      text2.setAttribute("x", props.point.x.toString());
-      text2.setAttribute("y", props.point.y.toString());
+      text2.setAttribute("dx", props.label.length > 5 ? "-18" : "-16");
+      text2.setAttribute("dy", "1");
 
-      polygon.setAttribute(
-        "points",
-        `${props.point.x - 11} ${yCoordinate} 
-          ${props.point.x - 9} ${yCoordinate + 1} 
-           ${props.point.x - 10} ${yCoordinate} 
-           ${props.point.x - 9} ${yCoordinate - 1}
-           ${props.point.x - 11} ${yCoordinate}`
-      );
+      polygon.setAttribute("points", `-6 0 -4 1 -5 0 -4 -1 -6 0`);
+
       group.append(circle);
       group.append(text);
 
       group2.append(text2);
-      group2.append(line);
-      group2.append(polygon);
+
+      group3.append(line);
+      group3.append(polygon);
       group.append(group2);
+      group.append(group3);
+
+      if (props.degree) {
+        group3.setAttribute("transform", `rotate(${props.degree})`);
+        text2.setAttribute("transform", `rotate(${props.degree})`);
+      }
+
+      group.setAttribute(
+        "transform",
+        `translate(${props.point.x + props.dx},${props.point.y + props.dy})`
+      );
+
       $svgRef.append(group);
     };
 
@@ -330,267 +328,6 @@ const Matrix: React.FC = () => {
     $svgRef.append(circle);
 
     circles.forEach((circle: any) => drawCircle(circle));
-    // //Центер
-    // drawCircle({
-    //   point: Center,
-    //   value: "9",
-    //   color: "sandy",
-    //   dx: 0,
-    //   dy: 0,
-    // });
-    // //Внешний радиус
-    // drawCircle({
-    //   point: A,
-    //   color: "purple",
-    //   value: "13",
-    //   dx: 9,
-    //   dy: 0,
-    // });
-    // drawCircle({
-    //   point: A,
-    //   value: "8",
-    //   color: "blue",
-    //   size: "medium",
-    //   dx: indentCircleXS,
-    //   dy: 0,
-    // });
-    // drawCircle({
-    //   point: A,
-    //   value: "22",
-    //   color: "lightblue",
-    //   size: "small",
-    //   dx: indentCircleS,
-    //   dy: 0,
-    // });
-
-    // drawCircle({
-    //   point: A,
-    //   value: "4",
-    //   color: "green",
-    //   size: "small",
-    //   dx: indentCircleM,
-    //   dy: 0,
-    // });
-    // //--------------------------------------//
-
-    // drawCircle({
-    //   point: B,
-    //   value: "16",
-    //   dx: 6,
-    //   dy: 7,
-    // });
-    // //--------------------------------------//
-    // drawCircle({
-    //   point: C,
-    //   value: "3",
-    //   color: "purple",
-    //   size: "large",
-    //   dx: 0,
-    //   dy: 9,
-    // });
-    // drawCircle({
-    //   point: C,
-    //   value: "15",
-    //   color: "blue",
-    //   size: "medium",
-    //   dx: 0,
-    //   dy: indentCircleXS,
-    // });
-    // drawCircle({
-    //   point: C,
-    //   value: "12",
-    //   color: "lightblue",
-    //   size: "small",
-    //   dx: 0,
-    //   dy: indentCircleS,
-    // });
-    // drawCircle({
-    //   point: C,
-    //   value: "21",
-    //   color: "green",
-    //   size: "small",
-    //   dx: 0,
-    //   dy: indentCircleM,
-    // });
-
-    // //--------------------------------------//
-    // drawCircle({
-    //   point: D,
-    //   value: "5",
-    //   dx: -6,
-    //   dy: 7,
-    // });
-
-    // //--------------------------------------//
-    // drawCircle({
-    //   point: E,
-    //   value: "2",
-    //   color: "burgundy",
-    //   dx: -9,
-    //   dy: 0,
-    // });
-    // drawCircle({
-    //   point: E,
-    //   value: "13",
-    //   color: "black",
-    //   size: "medium",
-    //   dx: -indentCircleXS,
-    //   dy: 0,
-    // });
-    // drawCircle({
-    //   point: E,
-    //   value: "11",
-    //   color: "orange",
-    //   size: "small",
-    //   dx: -indentCircleS,
-    //   dy: 0,
-    // });
-
-    // //--------------------------------------//
-
-    // drawCircle({
-    //   point: F,
-    //   value: "20",
-    //   dx: -6,
-    //   dy: -7,
-    // });
-
-    // //--------------------------------------//
-    // drawCircle({
-    //   point: G,
-    //   value: "18",
-    //   color: "burgundy",
-    //   dx: 0,
-    //   dy: -9,
-    // });
-    // drawCircle({
-    //   point: G,
-    //   value: "9",
-    //   color: "black",
-    //   size: "medium",
-    //   dx: 0,
-    //   dy: -indentCircleXS,
-    // });
-    // drawCircle({
-    //   point: G,
-    //   value: "9",
-    //   color: "orange",
-    //   size: "small",
-    //   dx: 0,
-    //   dy: -indentCircleS,
-    // });
-    // //--------------------------------------//
-
-    // drawCircle({
-    //   point: H,
-    //   value: "4",
-    //   dx: 6,
-    //   dy: -7,
-    // });
-
-    // //Внутренний радиус квадрата
-    // const rectA = new Point(marginX, marginY);
-    // const rectB = new Point(marginX + side, marginY);
-    // const rectC = new Point(marginX, marginY + side);
-    // const rectD = new Point(marginX + side, marginY + side);
-    // //--------------------------------------//
-    // drawCircle({
-    //   point: rectA,
-    //   value: "5",
-    //   color: "black",
-    //   size: "medium",
-    //   dx: 8,
-    //   dy: 8,
-    // });
-    // drawCircle({
-    //   point: rectA,
-    //   value: "7",
-    //   color: "black",
-    //   size: "small",
-    //   dx: 15.5,
-    //   dy: 15.5,
-    // });
-
-    // //--------------------------------------//
-
-    // drawCircle({
-    //   point: rectB,
-    //   value: "19",
-    //   color: "black",
-    //   size: "medium",
-    //   dx: -8,
-    //   dy: 8,
-    // });
-    // drawCircle({
-    //   point: rectB,
-    //   value: "14",
-    //   color: "black",
-    //   size: "small",
-    //   dx: -15.5,
-    //   dy: 15.5,
-    // });
-
-    // //--------------------------------------//
-    // drawCircle({
-    //   point: rectC,
-    //   value: "17",
-    //   color: "black",
-    //   size: "medium",
-    //   dx: 8,
-    //   dy: -8,
-    // });
-
-    // drawCircle({
-    //   point: rectC,
-    //   value: "13",
-    //   color: "black",
-    //   size: "small",
-    //   dx: 15.5,
-    //   dy: -15.5,
-    // });
-
-    // //--------------------------------------//
-    // drawCircle({
-    //   point: rectD,
-    //   value: "4",
-    //   color: "black",
-    //   size: "medium",
-    //   dx: -8,
-    //   dy: -8,
-    // });
-    // drawCircle({
-    //   point: rectD,
-    //   value: "11",
-    //   color: "black",
-    //   size: "small",
-    //   dx: -15.5,
-    //   dy: -15.5,
-    // });
-    // drawCircle({
-    //   point: rectD,
-    //   value: "20",
-    //   color: "black",
-    //   size: "small",
-    //   dx: -30,
-    //   dy: -30,
-    // });
-    // drawCircle({
-    //   point: rectD,
-    //   value: "4",
-    //   color: "black",
-    //   size: "small",
-    //   dx: -18,
-    //   dy: -34,
-    // });
-    // drawCircle({
-    //   point: rectD,
-    //   value: "11",
-    //   color: "black",
-    //   size: "small",
-    //   dx: -34,
-    //   dy: -18,
-    // });
-
     //--------------------------------------//
 
     drawLabel({
@@ -787,6 +524,7 @@ const Matrix: React.FC = () => {
       size: "mini",
       dx: -4,
       dy: 0,
+      degree: 45,
     });
     drawCircleWithArrow({
       point: C,
@@ -797,6 +535,18 @@ const Matrix: React.FC = () => {
       size: "mini",
       dx: 0,
       dy: -3.5,
+      degree: 90,
+    });
+    drawCircleWithArrow({
+      point: D,
+      value: "D",
+      label: "30 лет",
+      leftSide: false,
+      color: "purple",
+      size: "mini",
+      dx: 0,
+      dy: -3.5,
+      degree: -180,
     });
   });
   return (

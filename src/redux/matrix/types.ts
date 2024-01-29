@@ -9,7 +9,7 @@ export interface PointProps {
   point: Point;
   color?: string;
   size?: Size;
-  value: string;
+  value: number;
   dx: number;
   dy: number;
 }
