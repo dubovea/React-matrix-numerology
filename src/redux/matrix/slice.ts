@@ -1,11 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { MatrixInitialState, PointProps, Point, Size } from "./types";
+import {
+  MatrixInitialState,
+  PointProps,
+  Point,
+  Size,
+  YearsData,
+  Years,
+} from "./types";
 import { setCurrentDate } from "../inputs/slice";
 
 const side = 105,
   halfSide = side / 2,
   marginX = 60,
-  marginY = 95;
+  marginY = 45;
 
 const settings = {
   marginX: marginX,
@@ -15,7 +22,7 @@ const settings = {
   side: side,
   indentCircleXS: 25.5,
   indentCircleS: 36.5,
-  indentCircleM: 60,
+  indentCircleM: 57,
   halfSide: halfSide,
   centerX: marginX + halfSide,
   centerY: marginY + halfSide,
@@ -94,10 +101,188 @@ const rectD = {
 
 const points: Point[] = [A, B, C, D, E, F, H, G];
 const circles: PointProps[] = [];
+const yearsData: YearsData[] = [
+  {
+    key: Years.YEARS_0_10,
+    point: A,
+    staticValues: {
+      startX: 5,
+      startY: -7,
+      dx: 2.4,
+      dy: 5.7,
+      dCenterTextX: 1,
+      dCenterTextY: 1,
+      values: ["1-2", "2-3", "3-4", "5 лет", "6-7", "7-8", "8-9"],
+    },
+    dynamicValues: {
+      startX: -2,
+      startY: -7,
+      dx: 2.4,
+      dy: 5.7,
+      dCenterTextX: -2,
+      dCenterTextY: 1,
+      values: [],
+    },
+  },
+  {
+    key: Years.YEARS_10_20,
+    point: B,
+    staticValues: {
+      startX: 9,
+      startY: -3,
+      dx: 5.5,
+      dy: 2.3,
+      dTextY: 2.5,
+      dCenterTextX: 1,
+      dCenterTextY: 2,
+      values: ["11-12", "12-13", "13-14", "15 лет", "16-17", "17-18", "18-19"],
+    },
+    dynamicValues: {
+      startX: 5.5,
+      startY: -7,
+      dx: 5.5,
+      dy: 2.3,
+      values: [],
+    },
+  },
+  {
+    key: Years.YEARS_20_30,
+    point: C,
+    staticValues: {
+      startX: 10,
+      startY: 3.5,
+      dx: 5.5,
+      dy: -2.3,
+      dTextX: -6,
+      dTextY: 5,
+      dCenterTextX: -5.5,
+      dCenterTextY: 2,
+      values: ["21-22", "22-23", "23-24", "25 лет", "26-27", "27-28", "28-29"],
+    },
+    dynamicValues: {
+      startX: 10,
+      startY: 2,
+      dx: 5.5,
+      dy: -2.3,
+      values: [],
+    },
+  },
+  {
+    key: Years.YEARS_30_40,
+    point: D,
+    staticValues: {
+      startX: 5.7,
+      startY: 9,
+      dx: 2.55,
+      dy: -6,
+      dTextX: -8,
+      dTextY: 1,
+      dCenterTextX: -6.8,
+      dCenterTextY: 0,
+      values: ["31-32", "32-33", "33-34", "35 лет", "36-37", "37-38", "38-39"],
+    },
+    dynamicValues: {
+      startX: 6,
+      startY: 9.5,
+      dx: 2.55,
+      dy: -6,
+      values: [],
+    },
+  },
+  {
+    key: Years.YEARS_40_50,
+    point: E,
+    staticValues: {
+      startX: -0.3,
+      startY: 6,
+      dx: -2.55,
+      dy: -6,
+      dTextX: -9,
+      dTextY: 0.5,
+      dCenterTextX: -6.2,
+      dCenterTextY: 0.5,
+      values: ["41-42", "42-43", "43-44", "45 лет", "46-47", "47-48", "48-49"],
+    },
+    dynamicValues: {
+      startX: 0,
+      startY: 6.5,
+      dx: -2.55,
+      dy: -6,
+      values: [],
+    },
+  },
+  {
+    key: Years.YEARS_50_60,
+    point: F,
+    staticValues: {
+      startX: -3,
+      startY: 2.3,
+      dx: -6,
+      dy: -2.5,
+      dTextX: -8,
+      dTextY: -1.5,
+      dCenterTextX: -6.5,
+      dCenterTextY: -1,
+      values: ["51-52", "52-53", "53-54", "55 лет", "56-57", "57-58", "58-59"],
+    },
+    dynamicValues: {
+      startX: -3,
+      startY: 5,
+      dx: -6,
+      dy: -2.5,
+      dCenterTextX: 1,
+      dCenterTextY: 1,
+      values: [],
+    },
+  },
+  {
+    key: Years.YEARS_60_70,
+    point: G,
+    staticValues: {
+      startX: -9,
+      startY: -4.5,
+      dx: -6,
+      dy: 2.55,
+      dCenterTextX: 1,
+      dCenterTextY: -1,
+      values: ["61-62", "62-63", "63-64", "65 лет", "66-67", "67-68", "68-69"],
+    },
+    dynamicValues: {
+      startX: -15,
+      startY: -1,
+      dx: -6,
+      dy: 2.55,
+      dTextX: 2,
+      dTextY: 0,
+      dCenterTextY: 2,
+      values: [],
+    },
+  },
+  {
+    key: Years.YEARS_70_80,
+    point: H,
+    staticValues: {
+      startX: -1.8,
+      startY: -9,
+      dx: -2.55,
+      dy: 6,
+      values: ["71-72", "72-73", "73-74", "75 лет", "76-77", "77-78", "78-79"],
+    },
+    dynamicValues: {
+      startX: -8,
+      startY: -8,
+      dx: -2.55,
+      dy: 6,
+      dCenterTextX: -2,
+      values: [],
+    },
+  },
+];
 
 const initialState: MatrixInitialState = {
   points: points,
   circles: circles,
+  yearsData: yearsData,
 };
 
 const calculateData = (date: Date) => {
@@ -139,7 +324,74 @@ const calculateData = (date: Date) => {
     valueZ1 = generate(valueZ + strength),
     valueZ2 = generate(valueZ + valueZ1),
     valueU1 = generate(valueU + strength),
-    valueU2 = generate(valueU + valueU1);
+    valueU2 = generate(valueU + valueU1),
+    valueA3 = generate(valueD + valueA1),
+    valueB3 = generate(valueD + valueB1);
+
+  let yearsData: { key: Years; values: string[] }[] = [];
+  const generateYearData = (oParams: any) => {
+    const value_5_year = generate(oParams.startPoint + oParams.endPoint),
+      value_2_year = generate(oParams.startPoint + value_5_year),
+      value_1_year = generate(oParams.startPoint + value_2_year),
+      value_3_year = generate(value_2_year + value_5_year),
+      value_7_year = generate(value_5_year + oParams.endPoint),
+      value_8_year = generate(value_7_year + oParams.endPoint),
+      value_6_year = generate(value_7_year + value_5_year);
+    yearsData.push({
+      key: oParams.key,
+      values: [
+        value_1_year.toString(),
+        value_2_year.toString(),
+        value_3_year.toString(),
+        value_5_year.toString(),
+        value_6_year.toString(),
+        value_7_year.toString(),
+        value_8_year.toString(),
+      ],
+    });
+  };
+
+  generateYearData({
+    startPoint: valueA,
+    endPoint: valueE,
+    key: Years.YEARS_0_10,
+  });
+  generateYearData({
+    startPoint: valueE,
+    endPoint: valueB,
+    key: Years.YEARS_10_20,
+  });
+  generateYearData({
+    startPoint: valueB,
+    endPoint: valueJ,
+    key: Years.YEARS_20_30,
+  });
+  generateYearData({
+    startPoint: valueJ,
+    endPoint: valueV,
+    key: Years.YEARS_30_40,
+  });
+  generateYearData({
+    startPoint: valueV,
+    endPoint: valueU,
+    key: Years.YEARS_40_50,
+  });
+  generateYearData({
+    startPoint: valueU,
+    endPoint: valueG,
+    key: Years.YEARS_50_60,
+  });
+  generateYearData({
+    startPoint: valueG,
+    endPoint: valueZ,
+    key: Years.YEARS_60_70,
+  });
+  generateYearData({
+    startPoint: valueZ,
+    endPoint: valueA,
+    key: Years.YEARS_70_80,
+  });
+
   return {
     dd: valueA,
     mm: valueB,
@@ -169,6 +421,9 @@ const calculateData = (date: Date) => {
     sum23: valueZ2,
     sum24: valueU1,
     sum25: valueU2,
+    sum26: valueA3,
+    sum27: valueB3,
+    yearsData: yearsData,
   };
 };
 
@@ -179,6 +434,13 @@ export const matrixSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(setCurrentDate, (state, action: PayloadAction<Date>) => {
       const data = calculateData(action.payload);
+      state.yearsData.forEach((oStaticYear) => {
+        data.yearsData.forEach((oDynamicYear) => {
+          if (oStaticYear.key === oDynamicYear.key) {
+            oStaticYear.dynamicValues.values = oDynamicYear.values;
+          }
+        });
+      });
       state.circles = [
         {
           description: "Точка А",
@@ -208,6 +470,15 @@ export const matrixSlice = createSlice({
           dy: 0,
         },
         {
+          description: "Точка А3",
+          point: A,
+          value: data.sum26,
+          color: "green",
+          size: Size.SMALL,
+          dx: settings.indentCircleM,
+          dy: 0,
+        },
+        {
           description: "Точка Б",
           point: C,
           value: data.mm,
@@ -233,6 +504,15 @@ export const matrixSlice = createSlice({
           size: Size.SMALL,
           dx: 0,
           dy: settings.indentCircleS,
+        },
+        {
+          description: "Точка Б3",
+          point: C,
+          value: data.sum27,
+          color: "green",
+          size: Size.SMALL,
+          dx: 0,
+          dy: settings.indentCircleM,
         },
         {
           description: "Точка В",

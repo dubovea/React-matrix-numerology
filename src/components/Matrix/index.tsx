@@ -4,6 +4,8 @@ import { useAppDispath } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { matrixSelector } from "../../redux/matrix/selectors";
 import DatePicker from "../DatePicker";
+import { YearsData } from "../../redux/matrix/types";
+import Table from "../Table";
 
 class Point {
   x: number;
@@ -52,9 +54,9 @@ interface TextProps {
 
 const Matrix: React.FC = () => {
   const dispatch = useAppDispath();
-  const { circles } = useSelector(matrixSelector);
+  const { circles, yearsData } = useSelector(matrixSelector);
   const marginX = 60;
-  const marginY = 95;
+  const marginY = 45;
 
   const indent = 10;
   const radius = 89;
@@ -182,71 +184,92 @@ const Matrix: React.FC = () => {
       $svgRef.append(group);
     };
 
-    const drawLabel = (props: TextProps) => {
-      let dx = props.startX,
-        dy = props.startY;
-      for (let i = +props.value - 9; i < +props.value - 1; i++) {
-        if ((i + 1) % 5 === 0) {
-          continue;
+    const drawLabel = (props: YearsData) => {
+      let isCenteredText: boolean;
+
+      const fnDrawLabel = (oParams: any) => {
+        let { point, data, drawCircle, dx, dy, arrayMedian } = oParams;
+
+        data.values.forEach((value: any, index: any) => {
+          isCenteredText = index === arrayMedian;
+          dx += data.dx;
+          dy -= data.dy;
+
+          const group = document.createElementNS(svgns, "g");
+          const text = document.createElementNS(svgns, "text");
+          let sClassText = "matrix-label";
+          let sClassCircle = "matrix-label-circle";
+
+          text.textContent = `${value}`;
+          if (isCenteredText) {
+            sClassText = `matrix-label-bold`;
+            sClassCircle = "matrix-label-circle-medium";
+            if (drawCircle) {
+              const largeCircle = document.createElementNS(svgns, "circle");
+              largeCircle.setAttribute("cx", (point.x + dx - 2).toString());
+              largeCircle.setAttribute("cy", (point.y + dy).toString());
+              largeCircle.setAttribute("style", "r: var(--radius);");
+              largeCircle.setAttribute("class", "matrix-label-circle-large");
+              group.append(largeCircle);
+            }
+          }
+
+          text.setAttribute("dy", ".1em");
+
+          text.setAttribute(
+            "dx",
+            (
+              dx +
+              (data.dTextX || 0) +
+              (isCenteredText ? data.dCenterTextX || 0 : 0)
+            ).toString()
+          );
+          text.setAttribute(
+            "dy",
+            (
+              dy +
+              (data.dTextY || 0) +
+              (isCenteredText ? data.dCenterTextY || 0 : 0)
+            ).toString()
+          );
+          text.setAttribute("x", point.x.toString());
+          text.setAttribute("y", point.y.toString());
+          text.setAttribute("class", sClassText);
+
+          if (drawCircle) {
+            const circle = document.createElementNS(svgns, "circle");
+            circle.setAttribute("cx", (point.x + dx - 2).toString());
+            circle.setAttribute("cy", (point.y + dy).toString());
+            circle.setAttribute("style", "r: var(--radius);");
+            circle.setAttribute("class", sClassCircle);
+            group.append(circle);
+          }
+
+          group.append(text);
+          $svgRef.append(group);
+        });
+      };
+
+      yearsData.forEach((data) => {
+        const arrayMedian = Math.floor(data.staticValues.values.length / 2);
+        fnDrawLabel({
+          point: data.point,
+          data: data.staticValues,
+          drawCircle: true,
+          dx: data.staticValues.startX,
+          dy: data.staticValues.startY,
+          arrayMedian: arrayMedian,
+        });
+        if (data.dynamicValues) {
+          fnDrawLabel({
+            point: data.point,
+            data: data.dynamicValues,
+            dx: data.dynamicValues.startX,
+            dy: data.dynamicValues.startY,
+            arrayMedian: arrayMedian,
+          });
         }
-        const group = document.createElementNS(svgns, "g");
-        const text = document.createElementNS(svgns, "text");
-        const isCenteredText: boolean = i % 5 === 0 && props.drawCircle;
-        let sClassText = "matrix-label";
-        let sClassCircle = "matrix-label-circle";
-
-        dx += props.dx;
-        dy -= props.dy;
-
-        if (isCenteredText) {
-          text.textContent = `${i} лет`;
-          sClassText = `matrix-label-bold label-indent-${i}`;
-          sClassCircle = "matrix-label-circle-medium";
-
-          const largeCircle = document.createElementNS(svgns, "circle");
-          largeCircle.setAttribute("cx", (props.point.x + dx - 2).toString());
-          largeCircle.setAttribute("cy", (props.point.y + dy).toString());
-          largeCircle.setAttribute("style", "r: var(--radius);");
-          largeCircle.setAttribute("class", "matrix-label-circle-large");
-          group.append(largeCircle);
-        } else {
-          text.textContent = `${i}-${i + 1}`;
-        }
-
-        text.setAttribute("dy", ".1em");
-
-        text.setAttribute(
-          "dx",
-          (
-            dx +
-            (props.dTextX || 0) +
-            (isCenteredText ? props.dCenterTextX || 0 : 0)
-          ).toString()
-        );
-        text.setAttribute(
-          "dy",
-          (
-            dy +
-            (props.dTextY || 0) +
-            (isCenteredText ? props.dCenterTextY || 0 : 0)
-          ).toString()
-        );
-        text.setAttribute("x", props.point.x.toString());
-        text.setAttribute("y", props.point.y.toString());
-        text.setAttribute("class", sClassText);
-
-        if (props.drawCircle) {
-          const circle = document.createElementNS(svgns, "circle");
-          circle.setAttribute("cx", (props.point.x + dx - 2).toString());
-          circle.setAttribute("cy", (props.point.y + dy).toString());
-          circle.setAttribute("style", "r: var(--radius);");
-          circle.setAttribute("class", sClassCircle);
-          group.append(circle);
-        }
-
-        group.append(text);
-        $svgRef.append(group);
-      }
+      });
     };
 
     const svgns = "http://www.w3.org/2000/svg";
@@ -329,177 +352,8 @@ const Matrix: React.FC = () => {
     circles.forEach((circle: any) => drawCircle(circle));
     //--------------------------------------//
 
-    drawLabel({
-      drawCircle: true,
-      point: A,
-      value: "10",
-      startX: 5,
-      startY: -7,
-      dx: 2.4,
-      dy: 5.7,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: A,
-      value: "10",
-      startX: -2,
-      startY: -7,
-      dx: 2.4,
-      dy: 5.7,
-    });
-
-    drawLabel({
-      drawCircle: true,
-      point: B,
-      value: "20",
-      startX: 9,
-      startY: -3,
-      dx: 5.5,
-      dy: 2.3,
-      dTextY: 2.5,
-      dCenterTextX: 1,
-      dCenterTextY: 2,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: B,
-      value: "20",
-      startX: 5.5,
-      startY: -7,
-      dx: 5.5,
-      dy: 2.3,
-    });
-
-    drawLabel({
-      drawCircle: true,
-      point: C,
-      value: "30",
-      startX: 10,
-      startY: 3.5,
-      dx: 5.5,
-      dy: -2.3,
-      dTextX: -6,
-      dTextY: 5,
-      dCenterTextX: -5.5,
-      dCenterTextY: 2,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: C,
-      value: "30",
-      startX: 10,
-      startY: 2,
-      dx: 5.5,
-      dy: -2.3,
-    });
-
-    drawLabel({
-      drawCircle: true,
-      point: D,
-      value: "40",
-      startX: 5.7,
-      startY: 9,
-      dx: 2.55,
-      dy: -6,
-      dTextX: -8,
-      dTextY: 1,
-      dCenterTextX: -6.8,
-      dCenterTextY: 0,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: D,
-      value: "40",
-      startX: 6,
-      startY: 9.5,
-      dx: 2.55,
-      dy: -6,
-    });
-
-    drawLabel({
-      drawCircle: true,
-      point: E,
-      value: "50",
-      startX: -0.3,
-      startY: 6,
-      dx: -2.55,
-      dy: -6,
-      dTextX: -9,
-      dTextY: 0.5,
-      dCenterTextX: -6.2,
-      dCenterTextY: 0.5,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: E,
-      value: "50",
-      startX: 0,
-      startY: 6.5,
-      dx: -2.55,
-      dy: -6,
-    });
-
-    drawLabel({
-      drawCircle: true,
-      point: F,
-      value: "60",
-      startX: -3,
-      startY: 2.3,
-      dx: -6,
-      dy: -2.5,
-      dTextX: -8,
-      dTextY: -1.5,
-      dCenterTextX: -6.5,
-      dCenterTextY: -1,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: F,
-      value: "60",
-      startX: -3,
-      startY: 4,
-      dx: -6,
-      dy: -2.5,
-    });
-
-    drawLabel({
-      drawCircle: true,
-      point: G,
-      value: "70",
-      startX: -9,
-      startY: -4.5,
-      dx: -6,
-      dy: 2.55,
-      dCenterTextX: 1,
-      dCenterTextY: -1,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: G,
-      value: "70",
-      startX: -15,
-      startY: -1,
-      dx: -6,
-      dy: 2.55,
-    });
-
-    drawLabel({
-      drawCircle: true,
-      point: H,
-      value: "80",
-      startX: -1.8,
-      startY: -9,
-      dx: -2.55,
-      dy: 6,
-    });
-    drawLabel({
-      drawCircle: false,
-      point: H,
-      value: "80",
-      startX: -11,
-      startY: -8,
-      dx: -2.55,
-      dy: 6,
+    yearsData.forEach((data) => {
+      drawLabel(data);
     });
 
     drawCircleWithArrow({
@@ -586,8 +440,11 @@ const Matrix: React.FC = () => {
   });
   return (
     <div className="container">
-      <DatePicker />
-      <svg ref={svgRef} viewBox="0 0 450 450"></svg>
+      <div className="vbox">
+        <DatePicker />
+        <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />
+      </div>
+      <Table />
     </div>
   );
 };
