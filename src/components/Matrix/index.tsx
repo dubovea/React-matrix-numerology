@@ -1,11 +1,8 @@
 import React, { useRef, useEffect } from "react";
-import styles from "./styles.module.scss";
 import { useAppDispath } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { matrixSelector } from "../../redux/matrix/selectors";
-import DatePicker from "../DatePicker";
 import { YearsData } from "../../redux/matrix/types";
-import Table from "../Table";
 
 class Point {
   x: number;
@@ -438,15 +435,7 @@ const Matrix: React.FC = () => {
       dy: 0,
     });
   });
-  return (
-    <div className="container">
-      <div className="vbox">
-        <DatePicker />
-        <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />
-      </div>
-      <Table />
-    </div>
-  );
+  return <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />;
 };
 
 export default Matrix;

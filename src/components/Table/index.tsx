@@ -1,104 +1,90 @@
-import { useMemo } from "react";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_ColumnDef,
-} from "material-react-table";
+import React from "react";
+import { Space, Table, Tag } from "antd";
+import type { TableProps } from "antd";
 
-//Table data type
-type Person = {
-  name: {
-    firstName: string;
-    lastName: string;
-  };
+interface DataType {
+  key: string;
+  name: string;
+  age: number;
   address: string;
-  city: string;
-  state: string;
-};
+  tags: string[];
+}
 
-//nested data is ok, see accessorKeys in ColumnDef below
-const data: Person[] = [
+const columns: TableProps<DataType>["columns"] = [
   {
-    name: {
-      firstName: "John",
-      lastName: "Doe",
-    },
-    address: "261 Erdman Ford",
-    city: "East Daphne",
-    state: "Kentucky",
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    render: (text) => <a>{text}</a>,
   },
   {
-    name: {
-      firstName: "Jane",
-      lastName: "Doe",
-    },
-    address: "769 Dominic Grove",
-    city: "Columbus",
-    state: "Ohio",
+    title: "Age",
+    dataIndex: "age",
+    key: "age",
   },
   {
-    name: {
-      firstName: "Joe",
-      lastName: "Doe",
-    },
-    address: "566 Brakus Inlet",
-    city: "South Linda",
-    state: "West Virginia",
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
   },
   {
-    name: {
-      firstName: "Kevin",
-      lastName: "Vandy",
-    },
-    address: "722 Emie Stream",
-    city: "Lincoln",
-    state: "Nebraska",
+    title: "Tags",
+    key: "tags",
+    dataIndex: "tags",
+    render: (_, { tags }) => (
+      <>
+        {tags.map((tag) => {
+          let color = tag.length > 5 ? "geekblue" : "green";
+          if (tag === "loser") {
+            color = "volcano";
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
+    ),
   },
   {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Omaha",
-    state: "Nebraska",
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <Space size="middle">
+        <a>Invite {record.name}</a>
+        <a>Delete</a>
+      </Space>
+    ),
   },
 ];
 
-const Table = () => {
-  //should be memoized or stable
-  const columns = useMemo<MRT_ColumnDef<Person>[]>(
-    () => [
-      {
-        accessorKey: "name.firstName", //access nested data with dot notation
-        header: "First Name",
-        size: 150,
-      },
-      {
-        accessorKey: "name.lastName",
-        header: "Last Name",
-        size: 150,
-      },
-      {
-        accessorKey: "address", //normal accessorKey
-        header: "Address",
-        size: 200,
-      },
+const data: DataType[] = [
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+    tags: ["nice", "developer"],
+  },
+  {
+    key: "2",
+    name: "Jim Green",
+    age: 42,
+    address: "London No. 1 Lake Park",
+    tags: ["loser"],
+  },
+  {
+    key: "3",
+    name: "Joe Black",
+    age: 32,
+    address: "Sydney No. 1 Lake Park",
+    tags: ["cool", "teacher"],
+  },
+];
 
-    ],
-    []
-  );
+const TableComponent: React.FC = () => (
+  <Table columns={columns} dataSource={data} pagination={false} />
+);
 
-  const table = useMaterialReactTable({
-    enableColumnActions: false,
-    enableSorting: false,
-    enableBottomToolbar: false,
-    enableTopToolbar: false,
-    columns,
-    data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
-  });
-
-  return <MaterialReactTable table={table} />;
-};
-
-export default Table;
+export default TableComponent;
