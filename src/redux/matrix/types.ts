@@ -23,6 +23,7 @@ export interface MatrixInitialState {
   points: Point[];
   circles: PointProps[];
   yearsData: YearsData[];
+  tableData: TableDataType[];
 }
 
 export type FetchmatrixArgs = {
@@ -60,4 +61,14 @@ export interface YearsData {
   point: Point;
   staticValues: LabelValue;
   dynamicValues: LabelValue;
+}
+
+export interface TableDataType {
+  key: string;
+  backgroundColor?: string;
+  physics: number;
+  energy: number;
+  emotions: number;
+  chakra: string;
+  result?: boolean;
 }

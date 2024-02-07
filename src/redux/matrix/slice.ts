@@ -283,19 +283,20 @@ const initialState: MatrixInitialState = {
   points: points,
   circles: circles,
   yearsData: yearsData,
+  tableData: [],
+};
+
+const generate = (value: number) => {
+  if (+value > 22) {
+    return value
+      .toString()
+      .split("")
+      .reduce((acc, val) => (acc += +val), 0);
+  }
+  return +value;
 };
 
 const calculateData = (date: Date) => {
-  const generate = (value: number) => {
-    if (+value > 22) {
-      return value
-        .toString()
-        .split("")
-        .reduce((acc, val) => (acc += +val), 0);
-    }
-    return +value;
-  };
-
   const valueA = generate(date.getDate()),
     valueB = date.getMonth() + 1,
     valueV = generate(date.getFullYear()),
@@ -707,6 +708,105 @@ export const matrixSlice = createSlice({
           size: Size.SMALL,
           dx: 15.5,
           dy: -15.5,
+        },
+      ];
+
+      const resultChakra7 = generate(data.dd + data.mm),
+        resultChakra6 = generate(data.sum13 + data.sum15),
+        resultChakra5 = generate(data.sum12 + data.sum14),
+        resultChakra4 = generate(data.sum26 + data.sum27),
+        resultChakra3 = generate(data.sum2 + data.sum2),
+        resultChakra2 = generate(data.sum8 + data.sum7),
+        resultChakra1 = generate(data.yyyy + data.sum1);
+      state.tableData = [
+        {
+          key: "1",
+          backgroundColor: "#5d3a8a",
+          physics: data.dd,
+          energy: data.mm,
+          emotions: resultChakra7,
+          chakra: "7. Сахасрара",
+        },
+        {
+          key: "2",
+          backgroundColor: "#343e6f",
+          physics: data.sum13,
+          energy: data.sum15,
+          emotions: resultChakra6,
+          chakra: "6. Аджна",
+        },
+        {
+          key: "3",
+          backgroundColor: "#74a3ab",
+          physics: data.sum12,
+          energy: data.sum14,
+          emotions: resultChakra5,
+          chakra: "5. Вишудха",
+        },
+        {
+          key: "4",
+          backgroundColor: "#4c8656",
+          physics: data.sum26,
+          energy: data.sum27,
+          emotions: resultChakra4,
+          chakra: "4. Анахата",
+        },
+        {
+          key: "5",
+          backgroundColor: "#e2bc76",
+          physics: data.sum2,
+          energy: data.sum2,
+          emotions: resultChakra3,
+          chakra: "3. Манипура",
+        },
+        {
+          key: "6",
+          backgroundColor: "#a34924",
+          physics: data.sum8,
+          energy: data.sum7,
+          emotions: resultChakra2,
+          chakra: "2. Свадхистана",
+        },
+        {
+          key: "7",
+          backgroundColor: "#6a3432",
+          physics: data.yyyy,
+          energy: data.sum1,
+          emotions: resultChakra1,
+          chakra: "1. Муладхара",
+        },
+        {
+          key: "8",
+          backgroundColor: "black",
+          physics: generate(
+            data.dd +
+              data.sum13 +
+              data.sum12 +
+              data.sum26 +
+              data.sum2 +
+              data.sum8 +
+              data.yyyy
+          ),
+          energy: generate(
+            data.mm +
+              data.sum15 +
+              data.sum14 +
+              data.sum27 +
+              data.sum2 +
+              data.sum7 +
+              data.sum1
+          ),
+          emotions: generate(
+            resultChakra1 +
+              resultChakra2 +
+              resultChakra1 +
+              resultChakra4 +
+              resultChakra5 +
+              resultChakra6 +
+              resultChakra7
+          ),
+          chakra: "ИТОГО",
+          result: true
         },
       ];
     });

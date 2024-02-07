@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from "react";
-import { useAppDispath } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { matrixSelector } from "../../redux/matrix/selectors";
 import { YearsData } from "../../redux/matrix/types";
@@ -50,7 +49,6 @@ interface TextProps {
 }
 
 const Matrix: React.FC = () => {
-  const dispatch = useAppDispath();
   const { circles, yearsData } = useSelector(matrixSelector);
   const marginX = 60;
   const marginY = 45;

@@ -1,90 +1,61 @@
 import React from "react";
-import { Space, Table, Tag } from "antd";
+import { useSelector } from "react-redux";
+import { ConfigProvider, Table } from "antd";
 import type { TableProps } from "antd";
+import { TableDataType } from "../../redux/matrix/types";
+import { matrixSelector } from "../../redux/matrix/selectors";
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
+const columns: TableProps<TableDataType>["columns"] = [
+  {
+    title: "ФИЗИКА",
+    dataIndex: "physics",
+    key: "physics",
+  },
+  {
+    title: "ЭНЕРГИЯ",
+    dataIndex: "energy",
+    key: "energy",
+  },
+  {
+    title: "ЭМОЦИИ",
+    dataIndex: "emotions",
+    key: "emotions",
+  },
+  {
+    title: "НАЗВАНИЕ ЧАКРЫ",
+    dataIndex: "chakra",
+    key: "chakra",
+  },
+];
 
-const columns: TableProps<DataType>["columns"] = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
+const TableComponent: React.FC = () => {
+  const { tableData } = useSelector(matrixSelector);
+  return (
+    <ConfigProvider
+      theme={{
+        components: {
+          Table: {
+            headerBg: "black",
+            headerColor: "white",
+            borderColor: "white",
+            colorText: "white",
+          },
+        },
+      }}
+    >
+      <Table
+        columns={columns}
+        dataSource={tableData}
+        pagination={false}
+        onRow={(record) => ({
+          style: {
+            background: record.backgroundColor,
+            fontWeight: record.result ? "bold" : "",
+          },
         })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
-
-const TableComponent: React.FC = () => (
-  <Table columns={columns} dataSource={data} pagination={false} />
-);
+      />
+    </ConfigProvider>
+  );
+};
 
 export default TableComponent;
