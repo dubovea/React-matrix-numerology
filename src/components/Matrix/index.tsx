@@ -34,20 +34,6 @@ interface CircleProps {
   dy: number;
 }
 
-interface TextProps {
-  point: Point;
-  drawCircle: boolean;
-  value: string;
-  startX: number;
-  startY: number;
-  dx: number;
-  dy: number;
-  dTextX?: number;
-  dTextY?: number;
-  dCenterTextX?: number;
-  dCenterTextY?: number;
-}
-
 const Matrix: React.FC = () => {
   const { circles, yearsData } = useSelector(matrixSelector);
   const marginX = 60;
@@ -343,7 +329,6 @@ const Matrix: React.FC = () => {
     circle.setAttribute("class", "matrix-line line");
 
     $svgRef.append(circle);
-
     circles.forEach((circle: any) => drawCircle(circle));
     //--------------------------------------//
 
