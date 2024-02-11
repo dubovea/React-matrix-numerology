@@ -284,6 +284,23 @@ const initialState: MatrixInitialState = {
   circles: circles,
   yearsData: yearsData,
   tableData: [],
+  infoData: {
+    pointSky: 0,
+    pointEarth: 0,
+    pointSkyEarth: 0,
+    pointMan: 0,
+    pointWoman: 0,
+    pointManWoman: 0,
+    pointSpirit: 0,
+    pointPlanet: 0,
+    dateBirth: "",
+    age: 0,
+    dayOfWeek: "",
+    manCode: "",
+    womanCode: "",
+    strengthFamily: 0,
+    codeStrength: "",
+  },
 };
 
 const generate = (value: number) => {
@@ -425,6 +442,7 @@ const calculateData = (date: Date) => {
     sum26: valueA3,
     sum27: valueB3,
     yearsData: yearsData,
+    strength: strength
   };
 };
 
@@ -799,16 +817,37 @@ export const matrixSlice = createSlice({
           emotions: generate(
             resultChakra1 +
               resultChakra2 +
-              resultChakra1 +
+              resultChakra3 +
               resultChakra4 +
               resultChakra5 +
               resultChakra6 +
               resultChakra7
           ),
           chakra: "ИТОГО",
-          result: true
+          result: true,
         },
       ];
+
+      let dayOfWeek = action.payload.toLocaleString("ru-RU", {
+        weekday: "long",
+      });
+      state.infoData = {
+        pointSky: data.sum27,
+        pointEarth: data.sum15,
+        pointSkyEarth: generate(data.sum27 + data.sum15),
+        pointMan: data.sum2,
+        pointWoman: data.sum2,
+        pointManWoman: resultChakra3,
+        pointSpirit: 4,
+        pointPlanet: 5,
+        dateBirth: action.payload.toLocaleDateString(),
+        age: new Date().getFullYear() - action.payload.getFullYear(),
+        dayOfWeek: dayOfWeek[0].toUpperCase() + dayOfWeek.substring(1),
+        manCode: "5,5",
+        womanCode: "5,5",
+        strengthFamily: data.strength,
+        codeStrength: "5,5",
+      };
     });
   },
 });

@@ -1,5 +1,6 @@
 import { Layout } from "antd";
 import TableComponent from "../Table";
+import TextBlock from "../TextBlock";
 const { Content } = Layout;
 
 const AppContent = () => {
@@ -14,6 +15,7 @@ const AppContent = () => {
       }}
     >
       <TableComponent />
+      <TextBlock />
     </Content>
   );
 };

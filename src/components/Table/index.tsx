@@ -4,6 +4,7 @@ import { ConfigProvider, Table } from "antd";
 import type { TableProps } from "antd";
 import { TableDataType } from "../../redux/matrix/types";
 import { matrixSelector } from "../../redux/matrix/selectors";
+import TextBlock from "../TextBlock";
 
 const columns: TableProps<TableDataType>["columns"] = [
   {
@@ -29,7 +30,8 @@ const columns: TableProps<TableDataType>["columns"] = [
 ];
 
 const TableComponent: React.FC = () => {
-  const { tableData } = useSelector(matrixSelector);
+  const { tableData } = useSelector(matrixSelector),
+    width = "75%";
   return (
     <ConfigProvider
       theme={{
@@ -39,11 +41,14 @@ const TableComponent: React.FC = () => {
             headerColor: "white",
             borderColor: "white",
             colorText: "white",
+            cellPaddingBlock: 1,
+            headerBorderRadius: 3,
           },
         },
       }}
     >
       <Table
+        style={{ width: width }}
         columns={columns}
         dataSource={tableData}
         pagination={false}
