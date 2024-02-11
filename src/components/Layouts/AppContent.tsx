@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Typography } from "antd";
 import TableComponent from "../Table";
 import TextBlock from "../TextBlock";
 const { Content } = Layout;
@@ -14,6 +14,12 @@ const AppContent = () => {
         padding: "1rem",
       }}
     >
+      <Typography.Title
+        style={{ color: "white", fontWeight: "bold", textAlign: "start" }}
+        level={4}
+      >
+        Карта здоровья
+      </Typography.Title>
       <TableComponent />
       <TextBlock />
     </Content>

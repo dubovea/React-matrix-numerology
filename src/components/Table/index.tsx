@@ -4,23 +4,25 @@ import { ConfigProvider, Table } from "antd";
 import type { TableProps } from "antd";
 import { TableDataType } from "../../redux/matrix/types";
 import { matrixSelector } from "../../redux/matrix/selectors";
-import TextBlock from "../TextBlock";
 
 const columns: TableProps<TableDataType>["columns"] = [
   {
     title: "ФИЗИКА",
     dataIndex: "physics",
     key: "physics",
+    align: "center",
   },
   {
     title: "ЭНЕРГИЯ",
     dataIndex: "energy",
     key: "energy",
+    align: "center",
   },
   {
     title: "ЭМОЦИИ",
     dataIndex: "emotions",
     key: "emotions",
+    align: "center",
   },
   {
     title: "НАЗВАНИЕ ЧАКРЫ",
@@ -39,10 +41,10 @@ const TableComponent: React.FC = () => {
           Table: {
             headerBg: "black",
             headerColor: "white",
-            borderColor: "white",
+            borderColor: "#eadeb6",
             colorText: "white",
             cellPaddingBlock: 1,
-            headerBorderRadius: 3,
+            headerBorderRadius: 0,
           },
         },
       }}
@@ -52,6 +54,7 @@ const TableComponent: React.FC = () => {
         columns={columns}
         dataSource={tableData}
         pagination={false}
+        bordered
         onRow={(record) => ({
           style: {
             background: record.backgroundColor,
