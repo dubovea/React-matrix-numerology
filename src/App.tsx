@@ -1,14 +1,16 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home";
+import HomePage from "./pages/HomePage";
+import MatrixPage from "./pages/MatrixPage";
 
 const App: React.FC = () => (
   <div className="wrapper">
     {/* <Header /> */}
     <div className="content">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/matrix" element={<MatrixPage />} />
       </Routes>
     </div>
   </div>
