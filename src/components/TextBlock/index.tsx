@@ -61,7 +61,7 @@ const TextBlock: React.FC = () => {
           Духовный зачет. Кто я для бога? Где божественное во мне?
         </Typography>
         <Flex gap="middle" justify="center" style={{ marginBottom: "1rem" }}>
-          <CircleText value={19} />
+          <CircleText value={infoData.pointSpirit} />
         </Flex>
         <Flex vertical>
           <Flex>
@@ -141,7 +141,7 @@ const TextBlock: React.FC = () => {
                 lineHeight: 1,
               }}
             >
-              22, 10, 5
+              {infoData.manCode}
             </Typography>
           </Flex>
           <Flex>
@@ -161,7 +161,7 @@ const TextBlock: React.FC = () => {
                 lineHeight: 1,
               }}
             >
-              14, 18, 5
+              {infoData.womanCode}
             </Typography>
           </Flex>
           <Flex>
@@ -201,7 +201,7 @@ const TextBlock: React.FC = () => {
                 lineHeight: 1,
               }}
             >
-              5, 10, 15
+              {infoData.codeStrength}
             </Typography>
           </Flex>
         </Flex>
@@ -255,7 +255,7 @@ const TextBlock: React.FC = () => {
           Планетарное предназначение человека.
         </Typography>
         <Flex gap="middle" justify="center">
-          <CircleText value={19} />
+          <CircleText value={infoData.pointPlanet} />
         </Flex>
       </Content>
     </Layout>

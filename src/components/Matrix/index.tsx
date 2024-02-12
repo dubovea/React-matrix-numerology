@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { matrixSelector } from "../../redux/matrix/selectors";
 import { YearsData } from "../../redux/matrix/types";
+import { getSvg } from "../../utils/getSvg";
 
 class Point {
   x: number;
@@ -417,6 +418,8 @@ const Matrix: React.FC = () => {
       dx: -4,
       dy: 0,
     });
+    $svgRef.append(getSvg("heart"));
+    $svgRef.append(getSvg("dollar"));
   });
   return <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />;
 };

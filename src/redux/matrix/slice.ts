@@ -303,14 +303,16 @@ const initialState: MatrixInitialState = {
   },
 };
 
-const generate = (value: number) => {
-  if (+value > 22) {
-    return value
+const generate = (value: number): number => {
+  if (value <= 22) {
+    return +value;
+  }
+  return generate(
+    value
       .toString()
       .split("")
-      .reduce((acc, val) => (acc += +val), 0);
-  }
-  return +value;
+      .reduce((acc, val) => (acc += +val), 0)
+  );
 };
 
 const calculateData = (date: Date) => {
@@ -344,8 +346,11 @@ const calculateData = (date: Date) => {
     valueU1 = generate(valueU + strength),
     valueU2 = generate(valueU + valueU1),
     valueA3 = generate(valueD + valueA1),
-    valueB3 = generate(valueD + valueB1);
-
+    valueB3 = generate(valueD + valueB1),
+    valueSky = generate(valueB + valueG),
+    valueEarth = generate(valueA + valueV),
+    valueMan = generate(valueE + valueU),
+    valueWoman = generate(valueJ + valueZ);
   let yearsData: { key: Years; values: string[] }[] = [];
   const generateYearData = (oParams: any) => {
     const value_5_year = generate(oParams.startPoint + oParams.endPoint),
@@ -415,11 +420,11 @@ const calculateData = (date: Date) => {
     mm: valueB,
     yyyy: valueV,
     sum1: valueG,
-    sum2: valueD,
-    sum3: valueE,
-    sum4: valueJ,
-    sum5: valueU,
-    sum6: valueZ,
+    valueD: valueD,
+    valueE: valueE,
+    valueJ: valueJ,
+    valueU: valueU,
+    valueZ: valueZ,
     sum7: valueK,
     sum8: valueL,
     sum9: valueM,
@@ -442,7 +447,11 @@ const calculateData = (date: Date) => {
     sum26: valueA3,
     sum27: valueB3,
     yearsData: yearsData,
-    strength: strength
+    strength: strength,
+    valueSky: valueSky,
+    valueEarth: valueEarth,
+    valueMan: valueMan,
+    valueWoman: valueWoman,
   };
 };
 
@@ -590,7 +599,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Д",
           point: Center,
-          value: data.sum2,
+          value: data.valueD,
           color: "sandy",
           size: Size.LARGE,
           dx: 0,
@@ -599,7 +608,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка E",
           point: B,
-          value: data.sum3,
+          value: data.valueE,
           size: Size.LARGE,
           dx: 6,
           dy: 7,
@@ -625,7 +634,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Ж",
           point: D,
-          value: data.sum4,
+          value: data.valueJ,
           size: Size.LARGE,
           dx: -6,
           dy: 7,
@@ -651,7 +660,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка И",
           point: F,
-          value: data.sum5,
+          value: data.valueU,
           size: Size.LARGE,
           dx: -6,
           dy: -7,
@@ -704,7 +713,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка З",
           point: H,
-          value: data.sum6,
+          value: data.valueZ,
           size: Size.LARGE,
           dx: 6,
           dy: -7,
@@ -733,7 +742,7 @@ export const matrixSlice = createSlice({
         resultChakra6 = generate(data.sum13 + data.sum15),
         resultChakra5 = generate(data.sum12 + data.sum14),
         resultChakra4 = generate(data.sum26 + data.sum27),
-        resultChakra3 = generate(data.sum2 + data.sum2),
+        resultChakra3 = generate(data.valueD + data.valueD),
         resultChakra2 = generate(data.sum8 + data.sum7),
         resultChakra1 = generate(data.yyyy + data.sum1);
       state.tableData = [
@@ -772,8 +781,8 @@ export const matrixSlice = createSlice({
         {
           key: "5",
           backgroundColor: "#e2bc76",
-          physics: data.sum2,
-          energy: data.sum2,
+          physics: data.valueD,
+          energy: data.valueD,
           emotions: resultChakra3,
           chakra: "3. Манипура",
         },
@@ -801,7 +810,7 @@ export const matrixSlice = createSlice({
               data.sum13 +
               data.sum12 +
               data.sum26 +
-              data.sum2 +
+              data.valueD +
               data.sum8 +
               data.yyyy
           ),
@@ -810,7 +819,7 @@ export const matrixSlice = createSlice({
               data.sum15 +
               data.sum14 +
               data.sum27 +
-              data.sum2 +
+              data.valueD +
               data.sum7 +
               data.sum1
           ),
@@ -831,22 +840,31 @@ export const matrixSlice = createSlice({
       let dayOfWeek = action.payload.toLocaleString("ru-RU", {
         weekday: "long",
       });
+      const pointSkyEarth = generate(data.valueSky + data.valueEarth),
+        pointManWoman = generate(data.valueMan + data.valueWoman),
+        pointSpirit = generate(pointSkyEarth + pointManWoman);
       state.infoData = {
-        pointSky: data.sum27,
-        pointEarth: data.sum15,
-        pointSkyEarth: generate(data.sum27 + data.sum15),
-        pointMan: data.sum2,
-        pointWoman: data.sum2,
-        pointManWoman: resultChakra3,
-        pointSpirit: 4,
-        pointPlanet: 5,
+        pointSky: data.valueSky,
+        pointEarth: data.valueEarth,
+        pointSkyEarth: pointSkyEarth,
+        pointMan: data.valueMan,
+        pointWoman: data.valueWoman,
+        pointManWoman: pointManWoman,
+        pointSpirit: pointSpirit,
+        pointPlanet: generate(pointManWoman + pointSpirit),
         dateBirth: action.payload.toLocaleDateString(),
         age: new Date().getFullYear() - action.payload.getFullYear(),
         dayOfWeek: dayOfWeek[0].toUpperCase() + dayOfWeek.substring(1),
-        manCode: "5,5",
-        womanCode: "5,5",
+        manCode: `${data.valueE}, ${data.valueU}, ${generate(
+          data.valueE + data.valueU
+        )}`,
+        womanCode: `${data.valueJ}, ${data.valueZ}, ${generate(
+          data.valueJ + data.valueZ
+        )}`,
         strengthFamily: data.strength,
-        codeStrength: "5,5",
+        codeStrength: `${data.valueD}, ${data.strength}, ${generate(
+          data.valueD + data.strength
+        )}`,
       };
     });
   },
