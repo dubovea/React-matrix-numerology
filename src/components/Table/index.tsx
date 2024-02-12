@@ -33,7 +33,7 @@ const columns: TableProps<TableDataType>["columns"] = [
 
 const TableComponent: React.FC = () => {
   const { tableData } = useSelector(matrixSelector),
-    width = "75%";
+    width = "500px";
   return (
     <ConfigProvider
       theme={{

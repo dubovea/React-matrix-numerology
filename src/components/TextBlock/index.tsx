@@ -10,7 +10,7 @@ const { Title } = Typography;
 const TextBlock: React.FC = () => {
   const { infoData } = useSelector(matrixSelector);
   return (
-    <Layout style={{ width: "75%" }}>
+    <Layout style={{ width: "500px" }}>
       <Sider
         width="60%"
         style={{

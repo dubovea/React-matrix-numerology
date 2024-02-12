@@ -5,9 +5,9 @@ const siderStyle = {
   padding: "1rem",
 };
 
-const AppSider = () => {
+const AppSider: React.FC<{ width: string }> = ({ width }) => {
   return (
-    <Sider width="50%" style={siderStyle}>
+    <Sider width={width} style={siderStyle}>
       <Matrix />
     </Sider>
   );
