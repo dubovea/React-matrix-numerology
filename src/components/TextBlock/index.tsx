@@ -209,7 +209,6 @@ const TextBlock: React.FC = () => {
       <Content
         style={{
           textAlign: "left",
-          backgroundColor: "#001529",
         }}
       >
         <Title style={{ color: "white", fontWeight: "bold" }} level={5}>

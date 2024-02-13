@@ -1,9 +1,12 @@
-import { Layout } from "antd";
+import { ConfigProvider, Layout, theme } from "antd";
 import AppHeader from "./AppHeader";
 import AppSider from "./AppSider";
 import AppContent from "./AppContent";
+import { useSelector } from "react-redux";
+import { themeSelector } from "../../redux/theme/selectors";
 
 const AppLayout = () => {
+  const { backgroundColor } = useSelector(themeSelector);
   const isMobile = window.innerWidth < 800;
   if (isMobile) {
     return (
@@ -17,13 +20,26 @@ const AppLayout = () => {
     );
   }
   return (
-    <Layout>
-      <AppHeader />
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        components: {
+          Layout: {
+            headerBg: backgroundColor,
+            bodyBg: backgroundColor,
+            siderBg: backgroundColor,
+          },
+        },
+      }}
+    >
       <Layout>
-        <AppSider width="50%"/>
-        <AppContent />
+        <AppHeader />
+        <Layout>
+          <AppSider width="50%" />
+          <AppContent />
+        </Layout>
       </Layout>
-    </Layout>
+    </ConfigProvider>
   );
 };
 

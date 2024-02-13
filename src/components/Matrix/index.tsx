@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { matrixSelector } from "../../redux/matrix/selectors";
 import { YearsData } from "../../redux/matrix/types";
 import { getSvg } from "../../utils/getSvg";
+import { themeSelector } from "../../redux/theme/selectors";
 
 class Point {
   x: number;
@@ -36,6 +37,7 @@ interface CircleProps {
 }
 
 const Matrix: React.FC = () => {
+  const { colorLines } = useSelector(themeSelector);
   const { circles, yearsData } = useSelector(matrixSelector);
   const marginX = 60;
   const marginY = 45;
@@ -67,7 +69,9 @@ const Matrix: React.FC = () => {
         })
         .join(" ");
       line.setAttribute("d", `${path} Z`);
-      line.setAttribute("class", "matrix-line line");
+      line.setAttribute("fill", "transparent");
+      line.setAttribute("stroke", colorLines);
+      line.setAttribute("class", "line");
       $svgRef.append(line);
     };
 
@@ -309,13 +313,17 @@ const Matrix: React.FC = () => {
     rectRef.setAttribute("y", marginY.toString());
     rectRef.setAttribute("width", side.toString());
     rectRef.setAttribute("height", side.toString());
-    rectRef.setAttribute("class", "matrix-line bold-line");
+    rectRef.setAttribute("fill", "transparent");
+    rectRef.setAttribute("stroke", colorLines);
+    rectRef.setAttribute("class", "bold-line");
     $svgRef.append(rectRef);
 
     const rectRef45 = document.createElementNS(svgns, "rect");
     rectRef45.setAttribute("width", side.toString());
     rectRef45.setAttribute("height", side.toString());
-    rectRef45.setAttribute("class", "matrix-line bold-line");
+    rectRef45.setAttribute("fill", "transparent");
+    rectRef45.setAttribute("stroke", colorLines);
+    rectRef45.setAttribute("class", "bold-line");
     rectRef45.setAttribute(
       "transform",
       `translate(${RotateCenter.x} ${RotateCenter.y}),rotate(45)`
@@ -327,7 +335,9 @@ const Matrix: React.FC = () => {
     circle.setAttribute("cx", centerX.toString());
     circle.setAttribute("cy", centerY.toString());
     circle.setAttribute("r", (side / 2 - 5.1).toString());
-    circle.setAttribute("class", "matrix-line line");
+    circle.setAttribute("fill", "transparent");
+    circle.setAttribute("stroke", colorLines);
+    circle.setAttribute("class", "line");
 
     $svgRef.append(circle);
     circles.forEach((circle: any) => drawCircle(circle));
