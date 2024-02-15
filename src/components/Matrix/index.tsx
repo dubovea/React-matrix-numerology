@@ -4,6 +4,8 @@ import { matrixSelector } from "../../redux/matrix/selectors";
 import { YearsData } from "../../redux/matrix/types";
 import { getSvg } from "../../utils/getSvg";
 import { themeSelector } from "../../redux/theme/selectors";
+import Icon from "../../utils/test";
+import { getArrowSvg } from "../../utils/getArrowSvg";
 
 class Point {
   x: number;
@@ -301,11 +303,11 @@ const Matrix: React.FC = () => {
     //Создадим вертикальную линию
     drawLine([C, G]);
 
-    //Создадим диагональ с верхнего левого угла до правого нижнего угла
-    drawLine([B, F]);
+    // //Создадим диагональ с верхнего левого угла до правого нижнего угла
+    // drawLine([B, F]);
 
-    //Создадим диагональ с нижнего левого угла до правого верхнего угла
-    drawLine([H, D]);
+    // //Создадим диагональ с нижнего левого угла до правого верхнего угла
+    // drawLine([H, D]);
 
     //Создадим линию по контуру всех диагоналей
     drawLine([A, B, C, D, E, F, G, H]);
@@ -441,6 +443,7 @@ const Matrix: React.FC = () => {
       dollar.children[0]?.setAttribute("stroke", colors.colorIconDollar);
       $svgRef.append(dollar);
     }
+    $svgRef.append(getArrowSvg());
   });
   return <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />;
 };
