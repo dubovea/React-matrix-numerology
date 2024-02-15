@@ -4,10 +4,10 @@ export const getLocalStorageDate = () => {
 };
 
 export const getLocalStorageColors = () => {
-  const color = localStorage.getItem("color");
-  if (color) {
-    const parsed = JSON.parse(color);
-    return parsed;
+  const settings = localStorage.getItem("settings");
+  if (settings) {
+    const parsedSettings = JSON.parse(settings);
+    return parsedSettings;
   }
   return;
 };

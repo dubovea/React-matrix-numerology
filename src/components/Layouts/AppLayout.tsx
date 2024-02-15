@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { themeSelector } from "../../redux/theme/selectors";
 
 const AppLayout = () => {
-  const { backgroundColor } = useSelector(themeSelector);
+  const { temp } = useSelector(themeSelector);
+  const backgroundColor = temp.colors.backgroundColor;
   const isMobile = window.innerWidth < 800;
   if (isMobile) {
     return (

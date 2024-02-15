@@ -13,12 +13,12 @@ export const store = configureStore({
 });
 
 store.subscribe(() => {
-  const { backgroundColor, colorLines } = store.getState().theme;
+  const { saved } = store.getState().theme,
+    { colors } = saved;
   localStorage.setItem(
-    "color",
+    "settings",
     JSON.stringify({
-      backgroundColor: backgroundColor,
-      colorLines: colorLines,
+      colors: colors,
     })
   );
 });

@@ -37,8 +37,10 @@ interface CircleProps {
 }
 
 const Matrix: React.FC = () => {
-  const { colorLines } = useSelector(themeSelector);
+  const { temp } = useSelector(themeSelector);
+  const { colors } = temp;
   const { circles, yearsData } = useSelector(matrixSelector);
+  const { heart, dollar } = getSvg();
   const marginX = 60;
   const marginY = 45;
 
@@ -70,7 +72,7 @@ const Matrix: React.FC = () => {
         .join(" ");
       line.setAttribute("d", `${path} Z`);
       line.setAttribute("fill", "transparent");
-      line.setAttribute("stroke", colorLines);
+      line.setAttribute("stroke", colors.colorLines);
       line.setAttribute("class", "line");
       $svgRef.append(line);
     };
@@ -314,7 +316,7 @@ const Matrix: React.FC = () => {
     rectRef.setAttribute("width", side.toString());
     rectRef.setAttribute("height", side.toString());
     rectRef.setAttribute("fill", "transparent");
-    rectRef.setAttribute("stroke", colorLines);
+    rectRef.setAttribute("stroke", colors.colorLines);
     rectRef.setAttribute("class", "bold-line");
     $svgRef.append(rectRef);
 
@@ -322,7 +324,7 @@ const Matrix: React.FC = () => {
     rectRef45.setAttribute("width", side.toString());
     rectRef45.setAttribute("height", side.toString());
     rectRef45.setAttribute("fill", "transparent");
-    rectRef45.setAttribute("stroke", colorLines);
+    rectRef45.setAttribute("stroke", colors.colorLines);
     rectRef45.setAttribute("class", "bold-line");
     rectRef45.setAttribute(
       "transform",
@@ -336,7 +338,7 @@ const Matrix: React.FC = () => {
     circle.setAttribute("cy", centerY.toString());
     circle.setAttribute("r", (side / 2 - 5.1).toString());
     circle.setAttribute("fill", "transparent");
-    circle.setAttribute("stroke", colorLines);
+    circle.setAttribute("stroke", colors.colorLines);
     circle.setAttribute("class", "line");
 
     $svgRef.append(circle);
@@ -428,8 +430,17 @@ const Matrix: React.FC = () => {
       dx: -4,
       dy: 0,
     });
-    $svgRef.append(getSvg("heart"));
-    $svgRef.append(getSvg("dollar"));
+
+    //Добавляем иконки из отдельного модуля
+    if (heart) {
+      heart.children[0]?.setAttribute("fill", "transparent");
+      heart.children[0]?.setAttribute("stroke", colors.colorIconHeart);
+      $svgRef.append(heart);
+    }
+    if (dollar) {
+      dollar.children[0]?.setAttribute("stroke", colors.colorIconDollar);
+      $svgRef.append(dollar);
+    }
   });
   return <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />;
 };

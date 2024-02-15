@@ -1,25 +1,57 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ColorInitialState } from "./types";
+import {
+  Colors,
+  SettingsColor,
+  SettingsInitialState,
+  UpdateColor,
+} from "./types";
 import { getLocalStorageColors } from "../../utils/localStorageAPI";
 
-const oSettings = getLocalStorageColors();
-const initialState: ColorInitialState = {
-  backgroundColor: oSettings?.backgroundColor ?? "#001529",
-  colorLines: oSettings?.colorLines ?? "#eadeb6",
+const { colors } = getLocalStorageColors();
+
+const initialColors: SettingsColor = {
+  backgroundColor: "#001529",
+  colorLines: "#eadeb6",
+  colorLinesTable: "#eadeb6",
+  colorIconHeart: "#eadeb6",
+  colorIconDollar: "#eadeb6",
+};
+
+const colorSettings: SettingsColor = {
+  backgroundColor: colors?.backgroundColor ?? initialColors.backgroundColor,
+  colorLines: colors?.colorLines ?? initialColors.colorLines,
+  colorLinesTable: colors?.colorLinesTable ?? initialColors.colorLinesTable,
+  colorIconHeart: colors?.colorIconHeart ?? initialColors.colorIconHeart,
+  colorIconDollar: colors?.colorIconDollar ?? initialColors.colorIconDollar,
+};
+
+const initialState: SettingsInitialState = {
+  temp: {
+    colors: colorSettings,
+    borders: {},
+  },
+  saved: {
+    colors: colorSettings,
+    borders: {},
+  },
 };
 
 export const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    setBackgroundColor: (state, action: PayloadAction<string>) => {
-      state.backgroundColor = action.payload;
+    resetSettings: (state) => {
+      state.temp.colors = initialColors;
+      state.saved = state.temp;
     },
-    setColorLine: (state, action: PayloadAction<string>) => {
-      state.colorLines = action.payload;
+    saveSettings: (state) => {
+      state.saved = state.temp;
+    },
+    updateColor: (state, action: PayloadAction<UpdateColor>) => {
+      state.temp.colors[action.payload.field] = action.payload.color;
     },
   },
   extraReducers: () => {},
 });
-export const { setBackgroundColor, setColorLine } = themeSlice.actions;
+export const { updateColor, resetSettings, saveSettings } = themeSlice.actions;
 export default themeSlice.reducer;
