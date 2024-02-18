@@ -719,7 +719,7 @@ export const matrixSlice = createSlice({
           dy: -7,
         },
         {
-          description: "Точка E2",
+          description: "Точка З2",
           point: rectC,
           value: data.sum23,
           color: "black",
@@ -728,7 +728,7 @@ export const matrixSlice = createSlice({
           dy: -8,
         },
         {
-          description: "Точка E1",
+          description: "Точка З1",
           point: rectC,
           value: data.sum22,
           color: "black",

@@ -1,55 +1,66 @@
-export const getArrowSvg = () => {
-  const svgns = "http://www.w3.org/2000/svg",
+export const getArrowSvg = ({
+  id,
+  startPoint,
+  endPoint,
+  dx,
+  dy,
+  orient,
+  textProps,
+}) => {
+  const startCoordinates = `M${startPoint.x} ${startPoint.y}`,
+    endCoordinates = `${endPoint.x + dx} ${endPoint.y + dy}`,
+    svgns = "http://www.w3.org/2000/svg",
     svg = document.createElementNS(svgns, "svg"),
     defs = document.createElementNS(svgns, "defs");
-  svg.setAttribute("id", "svgArrow");
   svg.setAttribute("width", "100%");
   svg.setAttribute("height", "100%");
   svg.setAttribute("preserveAspectRatio", "none");
 
   const markerArrow = document.createElementNS(svgns, "marker"),
     markerArrowPolyline = document.createElementNS(svgns, "polyline");
-  markerArrow.setAttribute("id", "MarkerArrow");
+  markerArrow.setAttribute("id", id);
   markerArrow.setAttribute("viewBox", "0 0 70 70");
-  markerArrow.setAttribute("refX", "0");
+  markerArrow.setAttribute("refX", "4");
   markerArrow.setAttribute("refY", "10");
   markerArrow.setAttribute("markerUnits", "userSpaceOnUse");
-  markerArrow.setAttribute("orient", "-45");
+  markerArrow.setAttribute("orient", `${orient}`);
   markerArrow.setAttribute("markerWidth", "20");
   markerArrow.setAttribute("markerHeight", "20");
-  markerArrowPolyline.setAttribute("id", "markerPoly1");
   markerArrowPolyline.setAttribute("points", "0,0 20,10 0,20 4,10");
-  markerArrowPolyline.setAttribute("fill", "red");
-  markerArrowPolyline.setAttribute("stroke", "red");
+  markerArrowPolyline.setAttribute("fill", "#eadeb6");
+  markerArrowPolyline.setAttribute("stroke", "#eadeb6");
   markerArrow.append(markerArrowPolyline);
-  const markerCircle = document.createElementNS(svgns, "marker"),
-    circle = document.createElementNS(svgns, "circle");
-  markerCircle.setAttribute("id", "MarkerCircle");
-  markerCircle.setAttribute("viewBox", "0 0 10 10");
-  markerCircle.setAttribute("refX", "0");
-  markerCircle.setAttribute("refY", "5");
-  markerCircle.setAttribute("markerUnits", "userSpaceOnUse");
-  markerCircle.setAttribute("markerWidth", "10");
-  markerCircle.setAttribute("markerHeight", "10");
-  circle.setAttribute("cx", "5");
-  circle.setAttribute("cy", "5");
-  circle.setAttribute("r", "5");
-  circle.setAttribute("fill", "red");
-  circle.setAttribute("stroke", "red");
-  markerCircle.append(circle);
 
   defs.append(markerArrow);
 
-  const line = document.createElementNS(svgns, "line");
-  line.setAttribute("id", "path10");
-  line.setAttribute("x1", "100");
-  line.setAttribute("y1", "98");
-  line.setAttribute("x2", "150");
-  line.setAttribute("y2", "50");
+  const line = document.createElementNS(svgns, "path"),
+    animate = document.createElementNS(svgns, "animate"),
+    text = document.createElementNS(svgns, "text"),
+    g = document.createElementNS(svgns, "g");
+
+  animate.setAttribute("attributeName", "d");
+  animate.setAttribute("from", startCoordinates);
+  animate.setAttribute("to", endCoordinates);
+  animate.setAttribute("dur", "1s");
+  animate.setAttribute("repeatCount", "1");
+
+  line.setAttribute("d", `${startCoordinates},${endCoordinates}`);
   line.setAttribute(
     "style",
-    "marker-end: url(#MarkerArrow);  stroke:green; stroke-width:1; "
+    `marker-end: url(#${id});  stroke: #eadeb6; stroke-width:1;`
   );
+
+  line.append(animate);
+
+  if (textProps) {
+    text.textContent = `${textProps.label}`;
+    text.setAttribute("class", "testing-text");
+    g.setAttribute("transform", `translate(${textProps.x} ${textProps.y})`);
+    text.setAttribute("transform", `rotate(${textProps.orient})`);
+    g.append(text);
+  }
+
   svg.append(defs, line);
+  svg.append(g);
   return svg;
 };

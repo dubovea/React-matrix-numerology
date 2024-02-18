@@ -4,7 +4,6 @@ import { matrixSelector } from "../../redux/matrix/selectors";
 import { YearsData } from "../../redux/matrix/types";
 import { getSvg } from "../../utils/getSvg";
 import { themeSelector } from "../../redux/theme/selectors";
-import Icon from "../../utils/test";
 import { getArrowSvg } from "../../utils/getArrowSvg";
 
 class Point {
@@ -344,7 +343,88 @@ const Matrix: React.FC = () => {
     circle.setAttribute("class", "line");
 
     $svgRef.append(circle);
-    circles.forEach((circle: any) => drawCircle(circle));
+
+    const findCircleJ1 = circles.find((o) => o.description === "Точка Ж1"),
+      findCircleE1 = circles.find((o) => o.description === "Точка E1"),
+      findCircleZ1 = circles.find((o) => o.description === "Точка З1"),
+      findCircleU1 = circles.find((o) => o.description === "Точка И1");
+
+    if (findCircleJ1) {
+      $svgRef.append(
+        getArrowSvg({
+          id: "arrowLineJ1",
+          startPoint: Center,
+          endPoint: {
+            x: findCircleJ1?.point.x + findCircleJ1?.dx,
+            y: findCircleJ1?.point.y + findCircleJ1?.dy,
+          },
+          dx: -6.5,
+          dy: 6.5,
+          orient: -45,
+          textProps: {
+            x: 118.5,
+            y: 89.5,
+            orient: -45,
+            label: "линия женского рода",
+          },
+        })
+      );
+    }
+    if (findCircleE1) {
+      $svgRef.append(
+        getArrowSvg({
+          id: "arrowLineE1",
+          startPoint: Center,
+          endPoint: {
+            x: findCircleE1?.point.x + findCircleE1?.dx,
+            y: findCircleE1?.point.y + findCircleE1?.dy,
+          },
+          dx: 6.5,
+          dy: 6.5,
+          orient: 225,
+          textProps: {
+            x: 85,
+            y: 68,
+            orient: 45,
+            label: "линия мужского рода",
+          },
+        })
+      );
+    }
+    if (findCircleZ1) {
+      $svgRef.append(
+        getArrowSvg({
+          id: "arrowLineZ1",
+          startPoint: Center,
+          endPoint: {
+            x: findCircleZ1?.point.x + findCircleZ1?.dx,
+            y: findCircleZ1?.point.y + findCircleZ1?.dy,
+          },
+          dx: 6.5,
+          dy: -6.5,
+          orient: 135
+        })
+      );
+    }
+    if (findCircleU1) {
+      $svgRef.append(
+        getArrowSvg({
+          id: "arrowLineU1",
+          startPoint: Center,
+          endPoint: {
+            x: findCircleU1?.point.x + findCircleU1?.dx,
+            y: findCircleU1?.point.y + findCircleU1?.dy,
+          },
+          dx: -6.5,
+          dy: -6.5,
+          orient: 45
+        })
+      );
+    }
+
+    circles.forEach((circle: any) => {
+      drawCircle(circle);
+    });
     //--------------------------------------//
 
     yearsData.forEach((data) => {
@@ -443,7 +523,6 @@ const Matrix: React.FC = () => {
       dollar.children[0]?.setAttribute("stroke", colors.colorIconDollar);
       $svgRef.append(dollar);
     }
-    $svgRef.append(getArrowSvg());
   });
   return <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />;
 };

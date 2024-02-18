@@ -42,7 +42,9 @@ const AppHeader = () => {
   const handleSaveSettings = () => dispatch(saveSettings());
 
   const handleChangeDate: DatePickerProps["onChange"] = (date) => {
-    dispatch(setCurrentDate(date.toDate() ?? new Date()));
+    if (date) {
+      dispatch(setCurrentDate(date.toDate()));
+    }
   };
 
   return (

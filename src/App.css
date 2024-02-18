@@ -148,6 +148,14 @@
   fill: white;
 }
 
+.testing-text {
+  font-family: Arial-ItalicMT, Arial;
+  font-style: italic;
+  font-size: 3px;
+  fill: white;
+}
+
+
 .matrix-label-bold {
   font-family: Arial-ItalicMT, Arial;
   font-weight: bold;
