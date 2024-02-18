@@ -39,22 +39,20 @@ export const getArrowSvg = ({
     g = document.createElementNS(svgns, "g");
 
   animate.setAttribute("attributeName", "d");
-  animate.setAttribute("from", startCoordinates);
-  animate.setAttribute("to", endCoordinates);
+  animate.setAttribute("from", `M${startPoint.x},${startPoint.y}`);
+  animate.setAttribute("to", `M${endPoint.x + dx},${endPoint.y + dy}`);
   animate.setAttribute("dur", "1s");
   animate.setAttribute("repeatCount", "1");
 
   line.setAttribute("d", `${startCoordinates},${endCoordinates}`);
-  line.setAttribute(
-    "style",
-    `marker-end: url(#${id});  stroke: #eadeb6; stroke-width:1;`
-  );
+  line.setAttribute("style", `marker-end: url(#${id});  stroke: #eadeb6;`);
 
   line.append(animate);
 
   if (textProps) {
     text.textContent = `${textProps.label}`;
     text.setAttribute("class", "testing-text");
+    text.setAttribute("fill", "white");
     g.setAttribute("transform", `translate(${textProps.x} ${textProps.y})`);
     text.setAttribute("transform", `rotate(${textProps.orient})`);
     g.append(text);

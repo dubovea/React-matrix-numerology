@@ -121,6 +121,7 @@
   stroke: #eadeb6;
 }
 
+
 .dollar {
   font-size: 13px;
   font-family: ArialNarrow, Arial;
@@ -154,7 +155,6 @@
   font-size: 3px;
   fill: white;
 }
-
 
 .matrix-label-bold {
   font-family: Arial-ItalicMT, Arial;

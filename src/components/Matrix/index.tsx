@@ -347,7 +347,8 @@ const Matrix: React.FC = () => {
     const findCircleJ1 = circles.find((o) => o.description === "Точка Ж1"),
       findCircleE1 = circles.find((o) => o.description === "Точка E1"),
       findCircleZ1 = circles.find((o) => o.description === "Точка З1"),
-      findCircleU1 = circles.find((o) => o.description === "Точка И1");
+      findCircleU1 = circles.find((o) => o.description === "Точка И1"),
+      indentArrow = 6.5;
 
     if (findCircleJ1) {
       $svgRef.append(
@@ -358,8 +359,8 @@ const Matrix: React.FC = () => {
             x: findCircleJ1?.point.x + findCircleJ1?.dx,
             y: findCircleJ1?.point.y + findCircleJ1?.dy,
           },
-          dx: -6.5,
-          dy: 6.5,
+          dx: -indentArrow,
+          dy: indentArrow,
           orient: -45,
           textProps: {
             x: 118.5,
@@ -379,8 +380,8 @@ const Matrix: React.FC = () => {
             x: findCircleE1?.point.x + findCircleE1?.dx,
             y: findCircleE1?.point.y + findCircleE1?.dy,
           },
-          dx: 6.5,
-          dy: 6.5,
+          dx: indentArrow,
+          dy: indentArrow,
           orient: 225,
           textProps: {
             x: 85,
@@ -400,9 +401,9 @@ const Matrix: React.FC = () => {
             x: findCircleZ1?.point.x + findCircleZ1?.dx,
             y: findCircleZ1?.point.y + findCircleZ1?.dy,
           },
-          dx: 6.5,
-          dy: -6.5,
-          orient: 135
+          dx: indentArrow,
+          dy: -indentArrow,
+          orient: 135,
         })
       );
     }
@@ -415,9 +416,9 @@ const Matrix: React.FC = () => {
             x: findCircleU1?.point.x + findCircleU1?.dx,
             y: findCircleU1?.point.y + findCircleU1?.dy,
           },
-          dx: -6.5,
-          dy: -6.5,
-          orient: 45
+          dx: -indentArrow,
+          dy: -indentArrow,
+          orient: 45,
         })
       );
     }
