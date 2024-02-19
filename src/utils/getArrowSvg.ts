@@ -19,14 +19,14 @@ export const getArrowSvg = ({
   const markerArrow = document.createElementNS(svgns, "marker"),
     markerArrowPolyline = document.createElementNS(svgns, "polyline");
   markerArrow.setAttribute("id", id);
-  markerArrow.setAttribute("viewBox", "0 0 70 70");
-  markerArrow.setAttribute("refX", "4");
+  markerArrow.setAttribute("viewBox", "0 0 80 80");
+  markerArrow.setAttribute("refX", "6");
   markerArrow.setAttribute("refY", "10");
   markerArrow.setAttribute("markerUnits", "userSpaceOnUse");
   markerArrow.setAttribute("orient", `${orient}`);
   markerArrow.setAttribute("markerWidth", "20");
   markerArrow.setAttribute("markerHeight", "20");
-  markerArrowPolyline.setAttribute("points", "0,0 20,10 0,20 4,10");
+  markerArrowPolyline.setAttribute("points", "0,0 20,10 0,20 6,10");
   markerArrowPolyline.setAttribute("fill", "#eadeb6");
   markerArrowPolyline.setAttribute("stroke", "#eadeb6");
   markerArrow.append(markerArrowPolyline);
@@ -45,7 +45,7 @@ export const getArrowSvg = ({
   animate.setAttribute("repeatCount", "1");
 
   line.setAttribute("d", `${startCoordinates},${endCoordinates}`);
-  line.setAttribute("style", `marker-end: url(#${id});  stroke: #eadeb6;`);
+  line.setAttribute("style", `marker-end: url(#${id});  stroke: #eadeb6; stroke-width: 0.7px`);
 
   line.append(animate);
 

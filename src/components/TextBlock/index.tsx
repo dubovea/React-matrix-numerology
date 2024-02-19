@@ -26,6 +26,7 @@ const TextBlock: React.FC = () => {
             fontSize: 12,
             lineHeight: 1,
             marginBottom: "1rem",
+            marginRight: "1rem",
           }}
         >
           Соединение мужского и женского. Выстраивание взаимоотношений.
@@ -55,7 +56,8 @@ const TextBlock: React.FC = () => {
             color: "white",
             fontSize: 12,
             lineHeight: 1,
-            marginBottom: "1.5rem",
+            marginBottom: "1rem",
+            marginRight: "1rem",
           }}
         >
           Духовный зачет. Кто я для бога? Где божественное во мне?
@@ -248,7 +250,7 @@ const TextBlock: React.FC = () => {
             color: "white",
             fontSize: 12,
             lineHeight: 1,
-            marginBottom: "1.5rem",
+            marginBottom: "1rem",
           }}
         >
           Планетарное предназначение человека.

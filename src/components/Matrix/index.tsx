@@ -1,67 +1,32 @@
 import React, { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { matrixSelector } from "../../redux/matrix/selectors";
-import { YearsData } from "../../redux/matrix/types";
+import { Point, PointProps, YearsData } from "../../redux/matrix/types";
 import { getSvg } from "../../utils/getSvg";
 import { themeSelector } from "../../redux/theme/selectors";
 import { getArrowSvg } from "../../utils/getArrowSvg";
 
-class Point {
-  x: number;
-  y: number;
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
-interface PointProps {
-  point: Point;
-  color?: string;
-  size?: string;
-  value: string;
-  dx: number;
-  dy: number;
-  description?: string;
-}
-
-interface CircleProps {
-  point: Point;
-  color?: string;
-  textColor?: string;
-  size?: string;
-  leftSide?: boolean;
-  value: string;
-  label: string;
-  dx: number;
-  dy: number;
-}
-
 const Matrix: React.FC = () => {
   const { temp } = useSelector(themeSelector);
   const { colors } = temp;
-  const { circles, yearsData } = useSelector(matrixSelector);
+  const { properties, circles, yearsData, points } =
+    useSelector(matrixSelector);
+  const { Center, A, B, C, D, E, F, H, G, K, L, Center1 } = points;
+
+  const { side, innerRadius } = properties;
+
   const { heart, dollar } = getSvg();
   const marginX = 60;
   const marginY = 45;
-
-  const indent = 10;
-  const radius = 89;
-  const side = 105;
-
-  const halfSide = side / 2;
-  const centerX = marginX + halfSide;
-  const centerY = marginY + halfSide;
 
   const svgRef = useRef<any | null>();
 
   useEffect(() => {
     const $svgRef = svgRef.current;
     if (!svgRef) return;
-
     $svgRef.innerHTML = "";
 
-    const drawLine = (points: Point[]) => {
+    const drawLine = (points: Point[], dasharray?: string) => {
       const line = document.createElementNS(svgns, "path");
       const path = points
         .map((p: Point, i: Number) => {
@@ -75,6 +40,9 @@ const Matrix: React.FC = () => {
       line.setAttribute("fill", "transparent");
       line.setAttribute("stroke", colors.colorLines);
       line.setAttribute("class", "line");
+      if (dasharray) {
+        line.setAttribute("stroke-dasharray", dasharray);
+      }
       $svgRef.append(line);
     };
 
@@ -82,30 +50,68 @@ const Matrix: React.FC = () => {
       const group = document.createElementNS(svgns, "g");
       const circle = document.createElementNS(svgns, "circle");
       const text = document.createElementNS(svgns, "text");
-      const sSizeClassText = props.size ? `${props.size}-text` : "large-text";
-      const sSizeClassCircle = props.size
+      let sSizeClassText = props.size ? `${props.size}-text` : "large-text";
+      let sSizeClassCircle = props.size
         ? `${props.size}-circle`
         : "large-circle";
-      const sClassCircle = props.color
+      let sClassCircle = props.color
         ? `${sSizeClassCircle} ${props.color}-circle`
         : `${sSizeClassCircle} black-circle`;
-      text.textContent = props.value.toString();
+
+      const group2 = document.createElementNS(svgns, "g");
+      const group3 = document.createElementNS(svgns, "g");
+      const text2 = document.createElementNS(svgns, "text");
+      const line = document.createElementNS(svgns, "line");
+      const polygon = document.createElementNS(svgns, "polygon");
+
+      text.textContent = props.label;
+      sSizeClassText += props.textColor
+        ? ` ${props.textColor}-text`
+        : " white-text";
+
       text.setAttribute("class", `matrix-value-point ${sSizeClassText}`);
       text.setAttribute("dy", ".1em");
-      text.setAttribute("x", (props.point.x + props.dx).toString());
-      text.setAttribute("y", (props.point.y + props.dy).toString());
       text.setAttribute("title", props.description || "");
 
-      circle.setAttribute("cx", (props.point.x + props.dx).toString());
-      circle.setAttribute("cy", (props.point.y + props.dy).toString());
       circle.setAttribute("style", "r: var(--radius);");
       circle.setAttribute("class", sClassCircle);
-
       group.append(circle);
       group.append(text);
+
+      if (props.arrowProps) {
+        line.setAttribute("x1", "-6");
+        line.setAttribute("y1", "0");
+        line.setAttribute("x2", "-2");
+        line.setAttribute("y2", "0");
+        line.setAttribute("class", `${sClassCircle} small-arrow`);
+
+        text2.textContent = props.arrowProps.label ?? "";
+        text2.setAttribute("class", "arrow-label");
+        text2.setAttribute("dx", "-14.5");
+        text2.setAttribute("dy", "1.1");
+
+        polygon.setAttribute("class", `${sClassCircle} small-arrow`);
+        polygon.setAttribute("points", `-6 0 -4 1 -5 0 -4 -1 -6 0`);
+
+        group2.append(text2);
+
+        group3.append(line);
+        group3.append(polygon);
+        group.append(group2);
+        group.append(group3);
+
+        group3.setAttribute("transform", `rotate(${props.arrowProps.orient})`);
+        text2.setAttribute("dy", "10");
+      }
+      group.setAttribute(
+        "transform",
+        `translate(${props.point.x + (props.dx ?? 0)},${
+          props.point.y + (props.dy ?? 0)
+        })`
+      );
       $svgRef.append(group);
     };
-    const drawCircleWithArrow = (props: CircleProps) => {
+    const drawCircleWithArrow = (props: PointProps) => {
       const group = document.createElementNS(svgns, "g");
       const circle = document.createElementNS(svgns, "circle");
       const text = document.createElementNS(svgns, "text");
@@ -263,53 +269,16 @@ const Matrix: React.FC = () => {
 
     const svgns = "http://www.w3.org/2000/svg";
 
-    //Точка центер
-    const Center = new Point(centerX, marginY + halfSide);
-
-    //Точка центер вращения 2 квадрата
-    const RotateCenter = new Point(
-      Center.x,
-      Center.y - Math.sqrt((side * side) / 2)
-    );
-
-    //Точка А (крайняя левая)
-    const A = new Point(Center.x - radius, Center.y);
-
-    //Точка B (левая верхняя под углом 45 градусов)
-    const B = new Point(marginX - indent, marginY - indent);
-
-    //Точка C (верхняя по центру)
-    const C = new Point(Center.x, Center.y - radius);
-
-    //Точка D (правая верхняя под углом 45 градусов)
-    const D = new Point(marginX + side + indent, B.y);
-
-    //Точка E (крайняя правая)
-    const E = new Point(Center.x + radius, Center.y);
-
-    //Точка F (правая нижняя под углом -45 градусов)
-    const F = new Point(D.x, marginY + side + indent);
-
-    //Точка H (левая нижняя под углом -45 градусов)
-    const H = new Point(B.x, F.y);
-
-    //Точка G (нижняя по центру)
-    const G = new Point(Center.x, Center.y + radius);
-
     //Создадим горизонтальную линию
     drawLine([A, E]);
 
     //Создадим вертикальную линию
     drawLine([C, G]);
 
-    // //Создадим диагональ с верхнего левого угла до правого нижнего угла
-    // drawLine([B, F]);
-
-    // //Создадим диагональ с нижнего левого угла до правого верхнего угла
-    // drawLine([H, D]);
-
     //Создадим линию по контуру всех диагоналей
     drawLine([A, B, C, D, E, F, G, H]);
+
+    drawLine([K, L], "2");
 
     const rectRef = document.createElementNS(svgns, "rect");
     rectRef.setAttribute("x", marginX.toString());
@@ -329,15 +298,15 @@ const Matrix: React.FC = () => {
     rectRef45.setAttribute("class", "bold-line");
     rectRef45.setAttribute(
       "transform",
-      `translate(${RotateCenter.x} ${RotateCenter.y}),rotate(45)`
+      `translate(${Center1.x} ${Center1.y}),rotate(45)`
     );
     $svgRef.append(rectRef45);
 
     const circle = document.createElementNS(svgns, "circle");
 
-    circle.setAttribute("cx", centerX.toString());
-    circle.setAttribute("cy", centerY.toString());
-    circle.setAttribute("r", (side / 2 - 5.1).toString());
+    circle.setAttribute("cx", Center.x.toString());
+    circle.setAttribute("cy", Center.y.toString());
+    circle.setAttribute("r", innerRadius.toString());
     circle.setAttribute("fill", "transparent");
     circle.setAttribute("stroke", colors.colorLines);
     circle.setAttribute("class", "line");
@@ -348,7 +317,7 @@ const Matrix: React.FC = () => {
       findCircleE1 = circles.find((o) => o.description === "Точка E1"),
       findCircleZ1 = circles.find((o) => o.description === "Точка З1"),
       findCircleU1 = circles.find((o) => o.description === "Точка И1"),
-      indentArrow = 6.5;
+      indentArrow = 6.2;
 
     if (findCircleJ1) {
       $svgRef.append(
@@ -439,7 +408,7 @@ const Matrix: React.FC = () => {
       leftSide: true,
       color: "purple",
       size: "mini",
-      dx: -4,
+      dx: -3.5,
       dy: 0,
     });
 
@@ -461,7 +430,7 @@ const Matrix: React.FC = () => {
       color: "purple",
       size: "mini",
       dx: 0,
-      dy: -4,
+      dy: -3.5,
     });
     drawCircleWithArrow({
       point: D,
@@ -479,7 +448,7 @@ const Matrix: React.FC = () => {
       label: "40 лет",
       color: "burgundy",
       size: "mini",
-      dx: 4,
+      dx: 3.5,
       dy: 0,
     });
     drawCircleWithArrow({
@@ -500,7 +469,7 @@ const Matrix: React.FC = () => {
       color: "burgundy",
       size: "mini",
       dx: 0,
-      dy: 4,
+      dy: 3.5,
     });
     drawCircleWithArrow({
       point: H,
@@ -525,7 +494,13 @@ const Matrix: React.FC = () => {
       $svgRef.append(dollar);
     }
   });
-  return <svg ref={svgRef} id="matrix" viewBox="0 0 225 225" />;
+  return (
+    <svg
+      ref={svgRef}
+      id="matrix"
+      viewBox="0 0 225 225"
+    />
+  );
 };
 
 export default Matrix;

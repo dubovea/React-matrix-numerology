@@ -2,25 +2,52 @@ export interface Point {
   x: number;
   y: number;
 }
-
+export interface Points {
+  Center: Point;
+  Center1: Point;
+  A: Point;
+  B: Point;
+  C: Point;
+  D: Point;
+  E: Point;
+  F: Point;
+  H: Point;
+  G: Point;
+  K: Point;
+  L: Point;
+}
+export interface ArrowProps {
+  orient?: number;
+  label?: string;
+}
 export interface PointProps {
   description?: string;
   point: Point;
+  arrowProps?: ArrowProps;
   color?: string;
+  textColor?: string;
   size?: Size;
-  value: number;
-  dx: number;
-  dy: number;
+  label: string;
+  dx?: number;
+  dy?: number;
 }
 
 export enum Size {
+  LITTLE = "little",
+  LITTLE_1 = "little1",
   SMALL = "small",
   MEDIUM = "medium",
   LARGE = "large",
 }
 
+export interface Properties {
+  side: number;
+  innerRadius: number;
+}
+
 export interface MatrixInitialState {
-  points: Point[];
+  properties: Properties;
+  points: Points;
   circles: PointProps[];
   yearsData: YearsData[];
   tableData: TableDataType[];

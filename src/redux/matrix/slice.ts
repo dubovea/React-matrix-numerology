@@ -2,10 +2,10 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   MatrixInitialState,
   PointProps,
-  Point,
   Size,
   YearsData,
   Years,
+  Points,
 } from "./types";
 import { setCurrentDate } from "../inputs/slice";
 
@@ -19,6 +19,7 @@ const settings = {
   marginY: marginY,
   indent: 10,
   radius: 89,
+  innerRadius: halfSide - 5.1,
   side: side,
   indentCircleXS: 25.5,
   indentCircleS: 36.5,
@@ -99,7 +100,37 @@ const rectD = {
   y: marginY + side,
 };
 
-const points: Point[] = [A, B, C, D, E, F, H, G];
+const K = {
+  x: Center.x,
+  y: Center.y + settings.innerRadius,
+};
+
+const L = {
+  x: Center.x + settings.innerRadius,
+  y: Center.y,
+};
+
+//Точка центер вращения 2 квадрата
+const Center1 = {
+  x: Center.x,
+  y: Center.y - Math.sqrt((side * side) / 2),
+};
+
+const points: Points = {
+  Center: Center,
+  A: A,
+  B: B,
+  C: C,
+  D: D,
+  E: E,
+  F: F,
+  H: H,
+  G: G,
+  K: K,
+  L: L,
+  Center1: Center1,
+};
+
 const circles: PointProps[] = [];
 const yearsData: YearsData[] = [
   {
@@ -115,11 +146,11 @@ const yearsData: YearsData[] = [
       values: ["1-2", "2-3", "3-4", "5 лет", "6-7", "7-8", "8-9"],
     },
     dynamicValues: {
-      startX: -2,
+      startX: -1,
       startY: -7,
       dx: 2.4,
       dy: 5.7,
-      dCenterTextX: -2,
+      dCenterTextX: -2.5,
       dCenterTextY: 1,
       values: [],
     },
@@ -139,9 +170,10 @@ const yearsData: YearsData[] = [
     },
     dynamicValues: {
       startX: 5.5,
-      startY: -7,
+      startY: -6,
       dx: 5.5,
       dy: 2.3,
+      dCenterTextX: -1,
       values: [],
     },
   },
@@ -280,6 +312,10 @@ const yearsData: YearsData[] = [
 ];
 
 const initialState: MatrixInitialState = {
+  properties: {
+    side: side,
+    innerRadius: settings.innerRadius,
+  },
   points: points,
   circles: circles,
   yearsData: yearsData,
@@ -473,7 +509,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка А",
           point: A,
-          value: data.dd,
+          label: `${data.dd}`,
           color: "purple",
           size: Size.LARGE,
           dx: 9,
@@ -482,7 +518,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка А2",
           point: A,
-          value: data.sum13,
+          label: `${data.sum13}`,
           color: "blue",
           size: Size.MEDIUM,
           dx: settings.indentCircleXS,
@@ -491,7 +527,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка А1",
           point: A,
-          value: data.sum12,
+          label: `${data.sum12}`,
           color: "lightblue",
           size: Size.SMALL,
           dx: settings.indentCircleS,
@@ -500,7 +536,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка А3",
           point: A,
-          value: data.sum26,
+          label: `${data.sum26}`,
           color: "green",
           size: Size.SMALL,
           dx: settings.indentCircleM,
@@ -509,7 +545,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Б",
           point: C,
-          value: data.mm,
+          label: `${data.mm}`,
           color: "purple",
           size: Size.LARGE,
           dx: 0,
@@ -518,7 +554,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Б2",
           point: C,
-          value: data.sum15,
+          label: `${data.sum15}`,
           color: "blue",
           size: Size.MEDIUM,
           dx: 0,
@@ -527,7 +563,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Б1",
           point: C,
-          value: data.sum14,
+          label: `${data.sum14}`,
           color: "lightblue",
           size: Size.SMALL,
           dx: 0,
@@ -536,7 +572,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Б3",
           point: C,
-          value: data.sum27,
+          label: `${data.sum27}`,
           color: "green",
           size: Size.SMALL,
           dx: 0,
@@ -545,7 +581,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка В",
           point: E,
-          value: data.yyyy,
+          label: `${data.yyyy}`,
           color: "burgundy",
           size: Size.LARGE,
           dx: -9,
@@ -554,7 +590,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка В2",
           point: E,
-          value: data.sum16,
+          label: `${data.sum16}`,
           color: "black",
           size: Size.MEDIUM,
           dx: -settings.indentCircleXS,
@@ -563,7 +599,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Л (В1)",
           point: E,
-          value: data.sum8,
+          label: `${data.sum8}`,
           color: "orange",
           size: Size.SMALL,
           dx: -settings.indentCircleS,
@@ -572,7 +608,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Г",
           point: G,
-          value: data.sum1,
+          label: `${data.sum1}`,
           color: "burgundy",
           size: Size.LARGE,
           dx: 0,
@@ -581,7 +617,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Г2",
           point: G,
-          value: data.sum17,
+          label: `${data.sum17}`,
           color: "black",
           size: Size.MEDIUM,
           dx: 0,
@@ -590,7 +626,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка К (Г1)",
           point: G,
-          value: data.sum7,
+          label: `${data.sum7}`,
           color: "orange",
           size: Size.SMALL,
           dx: 0,
@@ -599,7 +635,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Д",
           point: Center,
-          value: data.valueD,
+          label: `${data.valueD}`,
           color: "sandy",
           size: Size.LARGE,
           dx: 0,
@@ -608,7 +644,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка E",
           point: B,
-          value: data.valueE,
+          label: `${data.valueE}`,
           size: Size.LARGE,
           dx: 6,
           dy: 7,
@@ -616,7 +652,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка E2",
           point: rectA,
-          value: data.sum19,
+          label: `${data.sum19}`,
           color: "black",
           size: Size.MEDIUM,
           dx: 8,
@@ -625,7 +661,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка E1",
           point: rectA,
-          value: data.sum18,
+          label: `${data.sum18}`,
           color: "black",
           size: Size.SMALL,
           dx: 15.5,
@@ -634,7 +670,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Ж",
           point: D,
-          value: data.valueJ,
+          label: `${data.valueJ}`,
           size: Size.LARGE,
           dx: -6,
           dy: 7,
@@ -642,7 +678,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Ж2",
           point: rectB,
-          value: data.sum21,
+          label: `${data.sum21}`,
           color: "black",
           size: Size.MEDIUM,
           dx: -8,
@@ -651,7 +687,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка Ж1",
           point: rectB,
-          value: data.sum20,
+          label: `${data.sum20}`,
           color: "black",
           size: Size.SMALL,
           dx: -15.5,
@@ -660,7 +696,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка И",
           point: F,
-          value: data.valueU,
+          label: `${data.valueU}`,
           size: Size.LARGE,
           dx: -6,
           dy: -7,
@@ -668,7 +704,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка И2",
           point: rectD,
-          value: data.sum25,
+          label: `${data.sum25}`,
           color: "black",
           size: Size.MEDIUM,
           dx: -8,
@@ -677,7 +713,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка И1",
           point: rectD,
-          value: data.sum24,
+          label: `${data.sum24}`,
           color: "black",
           size: Size.SMALL,
           dx: -15.5,
@@ -686,34 +722,64 @@ export const matrixSlice = createSlice({
         {
           description: "Точка М",
           point: rectD,
-          value: data.sum9,
+          label: `${data.sum9}`,
           color: "black",
           size: Size.SMALL,
-          dx: -30,
-          dy: -30,
+          dx: -28.5,
+          dy: -28.5,
         },
         {
           description: "Точка Н",
           point: rectD,
-          value: data.sum10,
+          label: `${data.sum10}`,
           color: "black",
           size: Size.SMALL,
-          dx: -34,
-          dy: -18,
+          dx: -32,
+          dy: -16,
         },
         {
           description: "Точка О",
           point: rectD,
-          value: data.sum11,
+          label: `${data.sum11}`,
           color: "black",
           size: Size.SMALL,
-          dx: -18,
-          dy: -34,
+          dx: -16,
+          dy: -32,
+        },
+        {
+          description: "Точка М (маленькая)",
+          point: rectD,
+          label: "М",
+          color: "white",
+          textColor: "black",
+          size: Size.LITTLE,
+          dx: -33,
+          dy: -33,
+        },
+        {
+          description: "Точка Н (маленькая)",
+          point: rectD,
+          label: "Н",
+          color: "white",
+          textColor: "black",
+          size: Size.LITTLE,
+          dx: -36.5,
+          dy: -20.5,
+        },
+        {
+          description: "Точка О (маленькая)",
+          point: rectD,
+          label: "О",
+          color: "white",
+          textColor: "black",
+          size: Size.LITTLE,
+          dx: -20.5,
+          dy: -36.5,
         },
         {
           description: "Точка З",
           point: H,
-          value: data.valueZ,
+          label: `${data.valueZ}`,
           size: Size.LARGE,
           dx: 6,
           dy: -7,
@@ -721,7 +787,7 @@ export const matrixSlice = createSlice({
         {
           description: "Точка З2",
           point: rectC,
-          value: data.sum23,
+          label: `${data.sum23}`,
           color: "black",
           size: Size.MEDIUM,
           dx: 8,
@@ -730,11 +796,39 @@ export const matrixSlice = createSlice({
         {
           description: "Точка З1",
           point: rectC,
-          value: data.sum22,
+          label: `${data.sum22}`,
           color: "black",
           size: Size.SMALL,
           dx: 15.5,
           dy: -15.5,
+        },
+        {
+          description: "Точка К (маленькая)",
+          point: K,
+          label: "K",
+          color: "orange",
+          size: Size.LITTLE,
+          dy: -2,
+        },
+        {
+          description: "Точка Л (маленькая)",
+          point: L,
+          label: "Л",
+          color: "orange",
+          size: Size.LITTLE,
+          dx: -2,
+        },
+        {
+          description: "Точка Д (маленькая)",
+          point: Center,
+          label: "Д",
+          color: "sandy",
+          size: Size.LITTLE_1,
+          dy: 12,
+          arrowProps: {
+            orient: 270,
+            label: "ЗОНА КОМФОРТА",
+          },
         },
       ];
 
