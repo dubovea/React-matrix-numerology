@@ -11,13 +11,26 @@ const AppLayout = () => {
   const isMobile = window.innerWidth < 800;
   if (isMobile) {
     return (
-      <Layout>
-        <AppHeader />
+      <ConfigProvider
+        theme={{
+          algorithm: theme.darkAlgorithm,
+          components: {
+            Layout: {
+              headerBg: backgroundColor,
+              bodyBg: backgroundColor,
+              siderBg: backgroundColor,
+            },
+          },
+        }}
+      >
         <Layout>
-          <AppSider width="100%" />
+          <AppHeader />
+          <Layout>
+            <AppSider width="100%" />
+          </Layout>
+          <AppContent />
         </Layout>
-        <AppContent />
-      </Layout>
+      </ConfigProvider>
     );
   }
   return (
@@ -33,10 +46,10 @@ const AppLayout = () => {
         },
       }}
     >
-      <Layout>
+      <Layout className="h-[calc(100vh)] ">
         <AppHeader />
-        <Layout>
-          <AppSider width="50%" />
+        <Layout className="mr-16">
+          <AppSider width="60%" />
           <AppContent />
         </Layout>
       </Layout>

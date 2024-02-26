@@ -26,7 +26,7 @@ const columns: TableProps<TableDataType>["columns"] = [
     align: "center",
   },
   {
-    title: "НАЗВАНИЕ ЧАКРЫ",
+    title: "ЧАКРА",
     dataIndex: "chakra",
     key: "chakra",
   },
@@ -35,8 +35,7 @@ const columns: TableProps<TableDataType>["columns"] = [
 const TableComponent: React.FC = () => {
   const { tableData } = useSelector(matrixSelector),
     { temp } = useSelector(themeSelector),
-    colorLinesTable = temp.colors.colorLinesTable,
-    width = "500px";
+    colorLinesTable = temp.colors.colorLinesTable;
   return (
     <ConfigProvider
       theme={{
@@ -53,7 +52,6 @@ const TableComponent: React.FC = () => {
       }}
     >
       <Table
-        style={{ width: width }}
         columns={columns}
         dataSource={tableData}
         pagination={false}

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .container {
   min-height: 100vh;
 }
@@ -5,14 +9,6 @@
   max-width: 800px;
 }
 
-#matrix {
-  float: left;
-  margin-left: 1%;
-  margin-top: 25px;
-  width: 100%;
-  max-width: 800px;
-  min-width: 325px;
-}
 #svgArrow {
   border: 1px solid red;
   display: block;
@@ -137,7 +133,6 @@
   fill: transparent;
   stroke: #eadeb6;
 }
-
 
 .dollar {
   font-size: 12px;

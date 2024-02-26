@@ -5,21 +5,14 @@ const { Content } = Layout;
 
 const AppContent = () => {
   return (
-    <Content
-      style={{
-        textAlign: "center",
-        minHeight: "calc(100vh - 60px)",
-        color: "#fff",
-        padding: "1rem",
-      }}
-    >
+    <Content className="text-center text-white p-1">
       <Typography.Title
         style={{ color: "white", fontWeight: "bold", textAlign: "start" }}
         level={4}
       >
         Карта здоровья
       </Typography.Title>
-      <TableComponent />
+      <TableComponent/>
       <TextBlock />
     </Content>
   );

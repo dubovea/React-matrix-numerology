@@ -498,7 +498,7 @@ const Matrix: React.FC = () => {
     <svg
       ref={svgRef}
       id="matrix"
-      viewBox="0 0 225 225"
+      viewBox="0 0 225 195"
     />
   );
 };
