@@ -1,3 +1,3 @@
 export interface DateInitial {
-  dateValue: Date;
+  dateString: string;
 }

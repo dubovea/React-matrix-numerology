@@ -1,4 +1,4 @@
-import { ConfigProvider, Layout, theme } from "antd";
+import { ConfigProvider, Divider, Layout, theme } from "antd";
 import AppHeader from "./AppHeader";
 import AppSider from "./AppSider";
 import AppContent from "./AppContent";

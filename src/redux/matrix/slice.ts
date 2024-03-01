@@ -8,6 +8,7 @@ import {
   Points,
 } from "./types";
 import { setCurrentDate } from "../inputs/slice";
+import moment from "moment";
 
 const side = 105,
   halfSide = side / 2,
@@ -496,8 +497,13 @@ export const matrixSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(setCurrentDate, (state, action: PayloadAction<Date>) => {
-      const data = calculateData(action.payload);
+    builder.addCase(setCurrentDate, (state, action: PayloadAction<string>) => {
+      const dateString = action.payload;
+      if (!dateString) {
+        return initialState;
+      }
+      const dateValue = moment(dateString, "DD.MM.YYYY").toDate(),
+        data = calculateData(dateValue);
       state.yearsData.forEach((oStaticYear) => {
         data.yearsData.forEach((oDynamicYear) => {
           if (oStaticYear.key === oDynamicYear.key) {
@@ -846,7 +852,11 @@ export const matrixSlice = createSlice({
           physics: data.dd,
           energy: data.mm,
           emotions: resultChakra7,
-          chakra: "7. Сахасрара",
+          chakra: {
+            label: "Сахасрара",
+            tooltip:
+              "Отвечает за состояние волос, мозга и верхней части черепа.",
+          },
         },
         {
           key: "2",
@@ -854,7 +864,11 @@ export const matrixSlice = createSlice({
           physics: data.sum13,
           energy: data.sum15,
           emotions: resultChakra6,
-          chakra: "6. Аджна",
+          chakra: {
+            label: "Аджна",
+            tooltip:
+              "Отвечает за состояние глаз, ушей, лица, щитовидки, плечей и рук.",
+          },
         },
         {
           key: "3",
@@ -862,7 +876,11 @@ export const matrixSlice = createSlice({
           physics: data.sum12,
           energy: data.sum14,
           emotions: resultChakra5,
-          chakra: "5. Вишудха",
+          chakra: {
+            label: "Вишудха",
+            tooltip:
+              "Отвечает за состояние горла, нижней челюсти, щитовидки, плечей и рук.",
+          },
         },
         {
           key: "4",
@@ -870,7 +888,11 @@ export const matrixSlice = createSlice({
           physics: data.sum26,
           energy: data.sum27,
           emotions: resultChakra4,
-          chakra: "4. Анахата",
+          chakra: {
+            label: "Анахата",
+            tooltip:
+              "Отвечает за состояние сердца, легких, бронхов, ребер и груди.",
+          },
         },
         {
           key: "5",
@@ -878,7 +900,11 @@ export const matrixSlice = createSlice({
           physics: data.valueD,
           energy: data.valueD,
           emotions: resultChakra3,
-          chakra: "3. Манипура",
+          chakra: {
+            label: "Манипура",
+            tooltip:
+              "Отвечает за состояние середины позвоночника, ЖКЕ и печени.",
+          },
         },
         {
           key: "6",
@@ -886,7 +912,11 @@ export const matrixSlice = createSlice({
           physics: data.sum8,
           energy: data.sum7,
           emotions: resultChakra2,
-          chakra: "2. Свадхистана",
+          chakra: {
+            label: "Свадхистана",
+            tooltip:
+              "Отвечает за состояние почек, толстого кишечника, надпочечников и половых органов.",
+          },
         },
         {
           key: "7",
@@ -894,7 +924,11 @@ export const matrixSlice = createSlice({
           physics: data.yyyy,
           energy: data.sum1,
           emotions: resultChakra1,
-          chakra: "1. Муладхара",
+          chakra: {
+            label: "Муладхара",
+            tooltip:
+              "Отвечает за состояние ног, ануса, крестеца и мочеполовой системы.",
+          },
         },
         {
           key: "8",
@@ -926,12 +960,16 @@ export const matrixSlice = createSlice({
               resultChakra6 +
               resultChakra7
           ),
-          chakra: "ИТОГО",
+          chakra: {
+            label: "ИТОГО",
+            tooltip:
+              "Отвечает за состояние костной, лимфатической, кровеносной систем и за лишний вес.",
+          },
           result: true,
         },
       ];
 
-      let dayOfWeek = action.payload.toLocaleString("ru-RU", {
+      let dayOfWeek = dateValue.toLocaleString("ru-RU", {
         weekday: "long",
       });
       const pointSkyEarth = generate(data.valueSky + data.valueEarth),
@@ -946,8 +984,8 @@ export const matrixSlice = createSlice({
         pointManWoman: pointManWoman,
         pointSpirit: pointSpirit,
         pointPlanet: generate(pointManWoman + pointSpirit),
-        dateBirth: action.payload.toLocaleDateString(),
-        age: new Date().getFullYear() - action.payload.getFullYear(),
+        dateBirth: dateValue.toLocaleDateString(),
+        age: new Date().getFullYear() - dateValue.getFullYear(),
         dayOfWeek: dayOfWeek[0].toUpperCase() + dayOfWeek.substring(1),
         manCode: `${data.valueE}, ${data.valueU}, ${generate(
           data.valueE + data.valueU

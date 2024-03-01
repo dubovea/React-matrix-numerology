@@ -1,10 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { ConfigProvider, Table } from "antd";
+import { ConfigProvider, Flex, Table, Tooltip, Typography } from "antd";
 import type { TableProps } from "antd";
-import { TableDataType } from "../../redux/matrix/types";
+import { ChakraType, TableDataType } from "../../redux/matrix/types";
 import { matrixSelector } from "../../redux/matrix/selectors";
 import { themeSelector } from "../../redux/theme/selectors";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 const columns: TableProps<TableDataType>["columns"] = [
   {
@@ -29,6 +30,14 @@ const columns: TableProps<TableDataType>["columns"] = [
     title: "ЧАКРА",
     dataIndex: "chakra",
     key: "chakra",
+    render: (chakra: ChakraType) => (
+      <Flex>
+        <Typography className="flex-1">{chakra.label}</Typography>
+        <Tooltip title={chakra.tooltip} placement="left">
+          <QuestionCircleOutlined />
+        </Tooltip>
+      </Flex>
+    ),
   },
 ];
 

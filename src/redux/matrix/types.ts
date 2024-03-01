@@ -91,13 +91,17 @@ export interface YearsData {
   dynamicValues: LabelValue;
 }
 
+export interface ChakraType {
+  label: string;
+  tooltip?: string;
+}
 export interface TableDataType {
   key: string;
   backgroundColor?: string;
   physics: number;
   energy: number;
   emotions: number;
-  chakra: string;
+  chakra: ChakraType;
   result?: boolean;
 }
 

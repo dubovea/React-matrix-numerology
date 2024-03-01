@@ -4,16 +4,17 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import MatrixPage from "./pages/MatrixPage";
 
-const App: React.FC = () => (
-  <div className="wrapper">
-    {/* <Header /> */}
-    <div className="content">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/matrix" element={<MatrixPage />} />
-      </Routes>
+const App: React.FC = () => {
+  return (
+    <div className="wrapper">
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/matrix" element={<MatrixPage />} />
+        </Routes>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default App;
