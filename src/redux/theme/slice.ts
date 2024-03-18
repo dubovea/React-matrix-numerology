@@ -10,7 +10,7 @@ import { getLocalStorageColors } from "../../utils/localStorageAPI";
 const { colors } = getLocalStorageColors();
 
 const initialColors: SettingsColor = {
-  backgroundColor: "#001529",
+  backgroundColor: "#171717",
   colorLines: "#eadeb6",
   colorLinesTable: "#eadeb6",
   colorIconHeart: "#eadeb6",

@@ -1,7 +1,12 @@
+@import url("https://fonts.googleapis.com/css?family=Cormorant");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+.main-page {
+  background-image: url("./assets/images/background.avif");
+  background-size: cover;
+}
 .container {
   min-height: 100vh;
 }
@@ -209,4 +214,30 @@
 
 .small-arrow {
   stroke-width: 0.4px;
+}
+
+.swiper-slide-active .slide-popup {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.header__link {
+  font-family: "Cormorant", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 1px;
+}
+
+.header__link:hover {
+  color: #a34924;
+}
+
+.header__logo {
+  font-family: "Cormorant", Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  white-space: nowrap;
+  padding-right: 30px;
 }

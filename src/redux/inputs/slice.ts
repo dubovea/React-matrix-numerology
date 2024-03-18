@@ -1,8 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { DateInitial } from "./types";
-
 const initialState: DateInitial = {
-  dateString: "",
+  dateString:  "",
 };
 
 export const inputsSlice = createSlice({
